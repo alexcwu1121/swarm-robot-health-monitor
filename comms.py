@@ -3,6 +3,7 @@
 """
 import zmq
 from queue import *
+import queue
 import time
 import threading
 import pickle
@@ -23,7 +24,7 @@ class Comms:
         socket.bind("tcp://{}:{}".format(ip, port))
         self.publisher_ports[topic] = socket
 
-    def receive(self, topic):
+    def __receive(self, topic):
         while True:
             message = self.subscriber_ports[topic].recv()
             self.subscriber_queues[topic].put(message)
@@ -36,12 +37,15 @@ class Comms:
         socket.connect("tcp://{}:{}".format(ip, port))
         self.subscriber_ports[topic] = socket
         self.subscriber_queues[topic] = Queue()
-        t = threading.Thread(target=self.receive, args=(topic,))
+        t = threading.Thread(target=self.__receive, args=(topic,))
         t.start()
 
     def get(self, topic):
-        encoded = self.subscriber_queues[topic].get(False)
-        return pickle.loads(encoded)
+        try:
+            encoded = self.subscriber_queues[topic].get(False)
+            return pickle.loads(encoded)
+        except queue.Empty:
+            return None
 
     def send(self, topic, message):
         encoded = pickle.dumps(message)
@@ -49,14 +53,10 @@ class Comms:
 
 
 class Message:
-    def __init__(self, timestamp, topic, payload):
-        self.timestamp = timestamp
+    def __init__(self, topic, payload):
         self.topic = topic
         self.payload = payload
 
     def __str__(self):
-        print(">"*20)
-        print("Timestamp: {}".format(self.timestamp))
-        print("Topic: {}".format(self.topic))
-        print("Payload: \n{}".format(self.payload))
-        print(">" * 20)
+        return(">"*20+"\nTopic: {}\nPayload: \n{}\n"
+               .format(self.topic,self.payload)+">"*20)
