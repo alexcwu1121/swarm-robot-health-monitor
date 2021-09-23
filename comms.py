@@ -54,6 +54,7 @@ class Comms:
 
 class Message:
     def __init__(self, topic, payload):
+        # payload is a dictionary
         self.topic = topic
         self.payload = payload
 
