@@ -47,6 +47,15 @@ class Comms:
         except queue.Empty:
             return None
 
+    def get_clear(self, topic):
+        encoded = None
+        while True:
+            try:
+                encoded = self.subscriber_queues[topic].get(False)
+            except queue.Empty:
+                break
+        return pickle.loads(encoded)
+
     def send(self, topic, message):
         encoded = pickle.dumps(message)
         self.publisher_ports[topic].send(encoded)

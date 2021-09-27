@@ -21,7 +21,7 @@ class pub_100:
             #print(msg)
             time.sleep(.1)
         print("All done sending")
-        os.exit()
+        exit()
 
 class sub_100:
     def __init__(self):
@@ -37,8 +37,24 @@ class sub_100:
                 if msg_recv.payload == '99':
                     break
         print("All done receiving")
-        os.exit()
+        exit()
 
+class sub_100_clear:
+    def __init__(self):
+        self.comms = Comms()
+        self.comms.add_subscriber_port('127.0.0.1','3001','integer')
+        time.sleep(.1)
+
+    def run(self):
+        while True:
+            time.sleep(0.5)
+            msg_recv = self.comms.get_clear('integer')
+            if msg_recv is not None:
+                print(msg_recv.payload)
+                if msg_recv.payload == '99':
+                    break
+        print("All done receiving")
+        exit()
 
 def worker(type):
     if type == 'pub':
@@ -47,15 +63,22 @@ def worker(type):
     elif type == 'sub':
         sub = sub_100()
         sub.run()
+    elif type == 'subclear':
+        sub = sub_100_clear()
+        sub.run()
     else:
         print("pub or sub only")
 
 if __name__ == "__main__":
     procs = []
     try:
-        p = mp.Process(target=worker, args=('sub',))
+        p = mp.Process(target=worker, args=('subclear',))
         procs.append(p)
         p.start()
+
+        #p = mp.Process(target=worker, args=('sub',))
+        #procs.append(p)
+        #p.start()
 
         p = mp.Process(target=worker, args=('pub',))
         procs.append(p)
