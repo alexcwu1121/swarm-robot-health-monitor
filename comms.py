@@ -48,6 +48,7 @@ class Comms:
             return None
 
     def get_clear(self, topic):
+        # Didn't just loop get() because deserialization
         encoded = None
         while True:
             try:

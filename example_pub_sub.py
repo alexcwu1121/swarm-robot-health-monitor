@@ -1,5 +1,5 @@
 """example_pub_sub
-    Start example publisher and subscriber processes that push through 100 integers from 0 to 99
+    Start example publisher and subscriber processes
 """
 from comms import Comms, Message
 from datetime import time
@@ -9,6 +9,7 @@ import sys
 import os
 
 class pub_100:
+    # Produce 100 integers from 0 to 99 in tenth second intervals
     def __init__(self):
         self.comms = Comms()
         self.comms.add_publisher_port('127.0.0.1','3001','integer')
@@ -24,6 +25,8 @@ class pub_100:
         exit()
 
 class sub_100:
+    # Consume integers using Comm's default get(), returning oldest message in queue
+    # No message loss, but runs risk of missing backlogging lots of messages
     def __init__(self):
         self.comms = Comms()
         self.comms.add_subscriber_port('127.0.0.1','3001','integer')
@@ -40,6 +43,8 @@ class sub_100:
         exit()
 
 class sub_100_clear:
+    # Consume integers using Comm's get_clear(), returning the newest message and popping everything else
+    # Always gets most recent message at the cost of intentional message dropping
     def __init__(self):
         self.comms = Comms()
         self.comms.add_subscriber_port('127.0.0.1','3001','integer')
