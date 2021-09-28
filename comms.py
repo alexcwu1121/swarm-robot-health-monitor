@@ -55,7 +55,9 @@ class Comms:
                 encoded = self.subscriber_queues[topic].get(False)
             except queue.Empty:
                 break
-        return pickle.loads(encoded)
+        if encoded is not None:
+            return pickle.loads(encoded)
+        return encoded
 
     def send(self, topic, message):
         encoded = pickle.dumps(message)
