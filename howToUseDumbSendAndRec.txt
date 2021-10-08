@@ -1,0 +1,10 @@
+python dumbSend.py <filename for prechoosen inputs or inputing nothing lets you send messages you write>
+
+format for lines in the prechoosen input file
+port_topic:
+<topic name><port number>
+messages:
+<topic>,<key1>,<value1>,<key2>,<value2>,<key3>,<value3>.. etc.(you can have as many lines and values as you want)
+
+dumbRec format for command line:
+python dumbRec.py <socket number: default 3001> <topic name: default "testInput">
