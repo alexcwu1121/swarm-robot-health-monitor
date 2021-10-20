@@ -11,6 +11,8 @@ from infodisplay import InfoDisplay as infd
 import json
 import numpy as np
 from tkinter import * 
+from tkinter import filedialog
+from tkinter import messagebox
 from ttkthemes import ThemedTk
 
 
@@ -28,8 +30,16 @@ class Gui():
         return cpane
 
     def load_file(self):
-        with open('config_example.json') as f:
-            data = json.load(f)
+        filename = filedialog.askopenfilename(initialdir='./config',
+                                                title = 'Select a swarm config',
+                                                filetype = [('JSON files','*.json')])
+        try:
+            with open(filename) as f:
+                data = json.load(f)
+        except:
+            messagebox.showinfo("Config Error", "config json not in corret format!")
+            return
+            
         list_of_machines = data["mlist"]
         Buttons = [None] * len(list_of_machines)
         for i in range(0, len(list_of_machines)):
