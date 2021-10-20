@@ -1,0 +1,70 @@
+{
+	"mlist":[
+    {
+        "ip": "71.25.180.79",
+        "name": "example_machine_1",
+        "core_data" :
+        {
+          "temp": "degree",
+          "mem": "percent"
+        },
+        "sensors_data" : 
+        {
+          "sonic_1" : "sonic_rangefinder",
+          "gyroscope_1" : "gyroscope"
+        }
+    },
+    {
+      "ip": "108.147.247.58",
+      "name": "example_machine_2",
+      "core_data":
+      {
+        "temp": "degree",
+        "mem": "percent"
+      },
+      "sensors_data" : 
+      {
+      }
+    },
+    {
+      "ip": "152.212.67.228",
+      "name": "example_machine_3",
+      "core_data":
+      {
+        "temp": "degree",
+        "mem": "percent"
+      },
+      "sensors_data" : 
+      {
+        "thermometer":"degree"
+      }
+    },
+    {
+      "ip": "177.92.22.190",
+      "name": "example_machine_4",
+      "core_data":
+      {
+        "temp": "degree",
+        "mem": "percent"
+      },
+      "sensors_data" : 
+      {
+        "thermometer":"degree",
+        "rangefinder":"meter",
+        "gps":"coordinate"
+      }
+    },
+    {
+      "ip": "88.14.112.114",
+      "name": "example_machine_5",
+      "core_data":
+      {
+        "temp": "degree",
+        "mem": "percent"
+      },
+      "sensors_data" : 
+      {
+      }
+    }
+  ]
+}
