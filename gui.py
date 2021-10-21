@@ -9,7 +9,6 @@ Description:This file implement majority of the main functionalities of our GUI 
 from collapsiblepane import CollapsiblePane as cp
 from infodisplay import InfoDisplay as infd
 import json
-import numpy as np
 from tkinter import * 
 from tkinter import filedialog
 from tkinter import messagebox
@@ -21,7 +20,6 @@ class Gui():
         self.root = self.intialization()
         while(1):
             self.root.update()
-        
 
     def makeCpane(self, name, data):
         cpane = cp(self.root, name, name)
@@ -37,7 +35,7 @@ class Gui():
             with open(filename) as f:
                 data = json.load(f)
         except:
-            messagebox.showinfo("Config Error", "config json not in corret format!")
+            messagebox.showinfo("Config Error", "config json not in correct format!")
             return
             
         list_of_machines = data["mlist"]

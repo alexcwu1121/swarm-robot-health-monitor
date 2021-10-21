@@ -1,17 +1,20 @@
-# Implementation of Collapsible Pane container
- 
-# importing tkinter and ttk modules
+"""
+infodisplay.py: InfoDisplay component for each dropdown display for our GUI.
+TODOS: TBD
+Description: This file implement a infodisplay GUI object that takes a dictionary
+of datas and returns a dictionary of labels with the data
+"""
+
+
 import tkinter as tk
 from tkinter import ttk
 
 class InfoDisplay(ttk.Frame):
+
     def __init__(self, parent, info):
-        ttk.Frame.__init__(self, parent)
-				
+        ttk.Frame.__init__(self, parent)				
         self.parent = parent
-        
         self._r = 0
-        
         #ip address as string
         self._ip = ttk.Label(self, 
                                 text=('ip: ' + info['ip']), 
@@ -22,12 +25,10 @@ class InfoDisplay(ttk.Frame):
                         column = 0, 
                         sticky='w')
         self._r = self._r + 1
-        
         #dictionary of core datas to be displayed
         self._core = self._create_text_list(info['data'])
-        
         self.frame = ttk.Frame(self)
-        
+
     def _create_text_list(self, info):
         data = {}
         i = 0
