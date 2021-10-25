@@ -19,6 +19,7 @@ class TestReciever:
             self.topic_name = sys.argv[2]
         self.comms.add_subscriber_port('129.161.221.130','3001',self.topic_name) #Alex
         self.comms.add_subscriber_port('129.161.220.149','3002',self.topic_name) #Ethan
+        self.comms.add_subscriber_port('129.161.220.32','3003',self.topic_name) #Daniel
         time.sleep(.1)
 
     def run(self):
