@@ -12,12 +12,14 @@ class TestReciever:
     
     def __init__(self):
         self.comms = Comms()
+        self.ip_num = '127.0.0.1'
         self.port_num = '3001'
         self.topic_name = 'testInput'
-        if len(sys.argv) == 3:
-            self.port_num = sys.argv[1]
-            self.topic_name = sys.argv[2]
-        self.comms.add_subscriber_port('127.0.0.1',self.port_num,self.topic_name)
+        if len(sys.argv) == 4:
+            self.ip_num = sys.argv[1]
+            self.port_num = sys.argv[2]
+            self.topic_name = sys.argv[3].replace('\n','')
+        self.comms.add_subscriber_port(self.ip_num,self.port_num,self.topic_name)
         time.sleep(.1)
 
     def run(self):
