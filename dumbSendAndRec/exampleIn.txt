@@ -1,6 +1,6 @@
 port_topic:
-testyWesty,3002
-testIn,3003
+testyWesty,3002,127.0.0.1
+testIn,3003,127.0.0.1
 messages:
 testyWesty,1,hello,2,world
 testyWesty,2,world
