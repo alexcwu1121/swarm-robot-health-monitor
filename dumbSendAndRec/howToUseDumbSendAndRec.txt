@@ -1,4 +1,4 @@
-python dumbSend.py <filename for prechoosen inputs or inputing nothing lets you send messages you write>
+python dumbSend.py <defaultPort, 3001 if no arguments> <filename for prechoosen inputs or inputing nothing lets you send messages you write>
 
 format for lines in the prechoosen input file
 port_topic:

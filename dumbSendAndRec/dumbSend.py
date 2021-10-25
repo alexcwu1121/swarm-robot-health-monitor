@@ -13,13 +13,16 @@ class TestSender:
     def __init__(self):
         self.comms = Comms()
         #gets all the port names and numbers
-        if(len(sys.argv) >= 2):
-            for line in open(sys.argv[1]).readlines():
+        if(len(sys.argv) >= 3):
+            for line in open(sys.argv[2]).readlines():
                 if line == 'messages:\n':
                     break;
                 if not(line == 'port_topic:\n'):
                     self.comms.add_publisher_port('0.0.0.0',line.split(',')[1],line.split(',')[0])
-        self.comms.add_publisher_port('0.0.0.0','3001','testInput')
+        if(len(sys.argv) = 2):
+            self.comms.add_publisher_port('0.0.0.0', sys.argv[1])
+        else:
+            self.comms.add_publisher_port('0.0.0.0','3001','testInput')
         time.sleep(.1)
     
     def run(self):
