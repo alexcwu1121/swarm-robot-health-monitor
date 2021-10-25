@@ -28,7 +28,7 @@ class TestSender:
     def run(self):
         if(len(sys.argv) >= 2):
             time.sleep(.2)
-            lines = open(sys.argv[1]).readlines()
+            lines = open(sys.argv[2]).readlines()
             mess_place = 0
             for line in lines:
                 mess_place+=1
