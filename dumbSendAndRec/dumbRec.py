@@ -17,7 +17,7 @@ class TestReciever:
         if len(sys.argv) == 3:
             self.port_num = sys.argv[1]
             self.topic_name = sys.argv[2]
-        self.comms.add_subscriber_port('192.168.1.233',self.port_num,self.topic_name)
+        self.comms.add_subscriber_port('128.213.76.153',self.port_num,self.topic_name)
         time.sleep(.1)
 
     def run(self):
