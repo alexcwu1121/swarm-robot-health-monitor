@@ -12,7 +12,7 @@ import psutil
 import time
 
 class Srhmd:
-    def __init__(self, name, server_hostname, update_interval=0.01, agg_interval=0.01):
+    def __init__(self, name, pub_hostname='0.0.0.0', update_interval=0.01, agg_interval=0.01):
         """
         Attributes:
         - comms
@@ -24,7 +24,7 @@ class Srhmd:
         """
         self.name = name
         self.comms = Comms()
-        self.comms.add_publisher_port(server_hostname, '3000', self.name)
+        self.comms.add_publisher_port(pub_hostname, '3000', self.name)
         self.comms.add_subscriber_port('127.0.0.1', '3100', 'ext_sensors')
 
         self.ext_sensors = dict()
@@ -101,5 +101,5 @@ class Srhmd:
             thread.join()
 
 if __name__ == "__main__":
-    srhmd = Srhmd("test1", "127.0.0.1")
+    srhmd = Srhmd("test1")
     srhmd.run()
