@@ -50,10 +50,12 @@ class TestSender:
             exit()
     
         while True:
-            to_send = input("enter a message to send or just press enter for a random message\n")
+            to_send = input("Type a message, Press enter for random, Type 'quit':  ")
             if(to_send==''):
                 for i in range(0,random.randint(1,128)):
                     to_send = to_send+random.choice(string.ascii_lowercase+string.ascii_uppercase)
+            if(to_send=='quit')
+                break
             print(to_send)
             msg = Message('testInput', {1: to_send})
             self.comms.send('testInput', msg)
