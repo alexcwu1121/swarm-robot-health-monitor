@@ -26,7 +26,7 @@ class TestSender:
         time.sleep(.1)
     
     def run(self):
-        if(len(sys.argv) >= 2):
+        if(len(sys.argv) >= 3):
             time.sleep(.2)
             lines = open(sys.argv[2]).readlines()
             mess_place = 0
