@@ -54,7 +54,7 @@ class TestSender:
             if(to_send==''):
                 for i in range(0,random.randint(1,128)):
                     to_send = to_send+random.choice(string.ascii_lowercase+string.ascii_uppercase)
-            if(to_send=='quit')
+            if(to_send=='quit'):
                 break
             print(to_send)
             msg = Message('testInput', {1: to_send})
