@@ -18,31 +18,41 @@ from ttkthemes import ThemedTk
 class Gui():
     def __init__(self):
         self.root = self.intialization()
+        self.cpanes = {}
+        self.infos = {}
         while(1):
             self.root.update()
 
     def makeCpane(self, name, data):
         cpane = cp(self.root, name, name)
         cpane.grid(row = 0, column = 0, sticky = 'w')
-        d = infd(cpane.frame, data).grid(row = 1, column = 0,)
-        return cpane
+        info = infd(cpane.frame, data)
+        info.grid(row = 1, column = 0)
+        return cpane, info 
 
     def load_file(self):
         filename = filedialog.askopenfilename(initialdir='./config',
                                                 title = 'Select a swarm config',
-                                                filetype = [('JSON files','*.json')])
+                                                filetypes=[("Json", '*.json')])
         try:
             with open(filename) as f:
                 data = json.load(f)
         except:
             messagebox.showinfo("Config Error", "config json not in correct format!")
             return
-            
-        list_of_machines = data["mlist"]
-        Buttons = [None] * len(list_of_machines)
+        
+        list_of_machines = data["mlist"]         
         for i in range(0, len(list_of_machines)):
-            Buttons[i] = self.makeCpane(list_of_machines[i]['name'], list_of_machines[i])
-            Buttons[i].grid(row=i, column=0, sticky='nsew')
+            name = list_of_machines[i]['name']
+            self.cpanes[name], self.infos[name] = self.makeCpane(name, list_of_machines[i])
+            self.cpanes[name].grid(row=i, column=0, sticky='nsew')
+
+    def update_display(self, updates):
+        for key in updates.keys():
+            self.infos[key]._core['mem'].config(text=str(updates[key]['mem']))
+            self.infos[key]._core['temp'].config(text=str(updates[key]['temp']))
+        updates["example_machine_1"]['mem'] = updates["example_machine_1"]['mem'] + 1 
+        self.root.update()
 
     #
     #def gui_exit(self):
@@ -59,6 +69,7 @@ class Gui():
         menubar = Menu(root)
         filemenu = Menu(menubar, tearoff=0)
         filemenu.add_command(label="Load", command=lambda: self.load_file())
+        filemenu.add_command(label="Update", command=lambda: self.update_display({"example_machine_1": {"mem": 1, "temp": 100}, "example_machine_2": {"mem": 5, "temp": 500}}))
         menubar.add_cascade(label="File", menu=filemenu)
         filemenu.add_separator()
         #filemenu.add_command(label="Exit", command=lambda: self.gui_exit())
