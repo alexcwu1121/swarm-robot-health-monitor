@@ -18,8 +18,8 @@ class TestSender:
                 if line == 'messages:\n':
                     break;
                 if not(line == 'port_topic:\n'):
-                    self.comms.add_publisher_port('192.168.1.244',line.split(',')[1],line.split(',')[0])
-        self.comms.add_publisher_port('192.168.1.244','3001','testInput')
+                    self.comms.add_publisher_port('0.0.0.0',line.split(',')[1],line.split(',')[0])
+        self.comms.add_publisher_port('0.0.0.0','3001','testInput')
         time.sleep(.1)
     
     def run(self):
