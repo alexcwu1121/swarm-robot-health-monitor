@@ -19,7 +19,7 @@ class TestSender:
                     break;
                 if not(line == 'port_topic:\n'):
                     self.comms.add_publisher_port('0.0.0.0',line.split(',')[1],line.split(',')[0])
-        if(len(sys.argv) = 2):
+        if(len(sys.argv) == 2):
             self.comms.add_publisher_port('0.0.0.0', sys.argv[1])
         else:
             self.comms.add_publisher_port('0.0.0.0','3001','testInput')
