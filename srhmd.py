@@ -10,9 +10,11 @@ from comms import Comms, Message
 import threading
 import psutil
 import time
+import json
+import socket
 
 class Srhmd:
-    def __init__(self, name, pub_hostname='0.0.0.0', update_interval=0.01, agg_interval=0.01):
+    def __init__(self, config_path='config.json'):
         """
         Attributes:
         - comms
@@ -22,14 +24,29 @@ class Srhmd:
         - ext_states
             dictionary holding extrinsic data states
         """
-        self.name = name
+        self.name = self.get_ip()
         self.comms = Comms()
-        self.comms.add_publisher_port(pub_hostname, '3000', self.name)
+        self.comms.add_publisher_port('0.0.0.0', '3000', self.name)
         self.comms.add_subscriber_port('127.0.0.1', '3100', 'ext_sensors')
 
         self.ext_sensors = dict()
-        self.update_interval = update_interval
-        self.agg_interval = agg_interval
+
+        with open(config_path) as f:
+            config = json.load(f)
+        self.update_interval = config['update_interval']
+        self.agg_interval = config['agg_interval']
+
+    @staticmethod
+    def get_ip():
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        try:
+            s.connect(('10.255.255.255', 1))
+            IP = s.getsockname()[0]
+        except Exception:
+            IP = '127.0.0.1'
+        finally:
+            s.close()
+        return IP
 
     def update_ext(self):
         """
@@ -101,5 +118,5 @@ class Srhmd:
             thread.join()
 
 if __name__ == "__main__":
-    srhmd = Srhmd("test1")
+    srhmd = Srhmd()
     srhmd.run()
