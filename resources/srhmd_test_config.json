@@ -1,0 +1,13 @@
+{
+    "ip": "71.25.180.79",
+    "name": "example_machine_1",
+    "update_interval": "0.01",
+    "agg_interval": "0.01",
+    "data" :
+    {
+        "temp": "degree",
+        "mem": "percent",
+        "sonic_1" : "sonic_rangefinder",
+        "gyroscope_1" : "gyroscope"
+    }
+}

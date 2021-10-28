@@ -33,8 +33,8 @@ class Srhmd:
 
         with open(config_path) as f:
             config = json.load(f)
-        self.update_interval = config['update_interval']
-        self.agg_interval = config['agg_interval']
+        self.update_interval = float(config['update_interval'])
+        self.agg_interval = float(config['agg_interval'])
 
     @staticmethod
     def get_ip():
@@ -118,5 +118,5 @@ class Srhmd:
             thread.join()
 
 if __name__ == "__main__":
-    srhmd = Srhmd()
+    srhmd = Srhmd("resources/srhmd_test_config.json")
     srhmd.run()
