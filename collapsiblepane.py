@@ -26,6 +26,7 @@ class CollapsiblePane(ttk.Frame):
         self.parent = parent
         self._expanded_text = expanded_text
         self._collapsed_text = collapsed_text
+        self._displayed = {}
  
         # Here weight implies that it can grow it's
         # size if extra space is available
@@ -52,6 +53,10 @@ class CollapsiblePane(ttk.Frame):
  
         # This will call activate function of class
         self._activate()
+
+    def setName(self, newname):
+        self._expanded_text=newname
+        self._collapsed_text=newname
  
     def _activate(self):
         if not self._variable.get():
@@ -66,7 +71,7 @@ class CollapsiblePane(ttk.Frame):
         elif self._variable.get():
             # increasing the frame area so new widgets
             # could reside in this container
-            self.frame.grid(row = 1, column = 0, columnspan = 2, sticky ="w")
+            self.frame.grid(row = 1, column = 0, columnspan = 2, sticky='w')
             self._button.configure(text = self._expanded_text)
  
     def toggle(self):
