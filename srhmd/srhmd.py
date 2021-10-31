@@ -26,13 +26,13 @@ class Srhmd:
         """
         self.name = self.get_ip()
         self.comms = Comms()
-        self.comms.add_publisher_port('*', '3000', self.name)
         self.comms.add_subscriber_port('127.0.0.1', '3100', 'ext_sensors')
 
         self.ext_sensors = dict()
 
         with open(config_path) as f:
             config = json.load(f)
+        self.comms.add_publisher_port('*', config['port'], self.name)
         self.update_interval = float(config['update_interval'])
         self.agg_interval = float(config['agg_interval'])
 
