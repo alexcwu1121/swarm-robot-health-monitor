@@ -1,6 +1,10 @@
-FROM python:3.7
+FROM navikey/raspbian-buster:2021-05-09
 
 EXPOSE 2000-4000
+
+RUN sudo apt-get update
+RUN sudo apt-get install -y python3.7
+RUN sudo apt-get install -y python3-pip
 
 RUN mkdir -p /srhmd
 
@@ -10,6 +14,6 @@ WORKDIR /srhmd
 
 COPY ./ /srhmd
 
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip3 install --no-cache-dir -r requirements.txt
 
-ENTRYPOINT python /srhmd/srhmd.py
+ENTRYPOINT python3.7 /srhmd/srhmd.py
