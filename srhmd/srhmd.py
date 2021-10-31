@@ -14,7 +14,7 @@ import json
 import socket
 
 class Srhmd:
-    def __init__(self, config_path='config.json'):
+    def __init__(self, config_path="resources/srhmd_test_config.json"):
         """
         Attributes:
         - comms
@@ -26,7 +26,7 @@ class Srhmd:
         """
         self.name = self.get_ip()
         self.comms = Comms()
-        self.comms.add_publisher_port('0.0.0.0', '3000', self.name)
+        self.comms.add_publisher_port('*', '3000', self.name)
         self.comms.add_subscriber_port('127.0.0.1', '3100', 'ext_sensors')
 
         self.ext_sensors = dict()
@@ -118,5 +118,5 @@ class Srhmd:
             thread.join()
 
 if __name__ == "__main__":
-    srhmd = Srhmd("resources/srhmd_test_config.json")
+    srhmd = Srhmd("srhmd_conf/config.json")
     srhmd.run()
