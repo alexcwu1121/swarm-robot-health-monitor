@@ -40,12 +40,14 @@ class display_base:
             thr.join()
 
     def get_state(self):
-        ret_ip = list(self.state)[0]
-        ret_state = dict()
-        ret_state[ret_ip] = dict()
-        for key in self.state[ret_ip].keys():
-            ret_state[ret_ip][key] = key + " : " + str(self.state[ret_ip][key])
-        return ret_state
+        bot_list = list()
+        for ip in self.state.keys():
+            ret_state = dict()
+            ret_state[ip] = dict()
+            for key in self.state[ip].keys():
+                ret_state[ip][key] = key + " : " + str(self.state[ip][key])
+            bot_list.append(ret_state)
+        return bot_list
 
 
 if __name__ == "__main__":

@@ -23,8 +23,8 @@ def main():
     
     while(True):
         g.refresh_gui()
-        if(len(my_rec.get_state().keys()) != 0):
-            g.update_display(my_rec.get_state())
+        for bot in my_rec.get_state():
+            g.update_display(bot)
         
     
     #update_display
