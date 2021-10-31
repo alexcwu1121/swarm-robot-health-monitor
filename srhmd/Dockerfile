@@ -8,7 +8,7 @@ RUN sudo apt-get install -y python3-pip
 
 RUN mkdir -p /srhmd
 
-VOLUME /home/srhmd_conf/:/srhmd/
+VOLUME /home/pi/srhmd_conf/:/srhmd/
 
 WORKDIR /srhmd
 
