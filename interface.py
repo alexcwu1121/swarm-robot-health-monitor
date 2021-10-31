@@ -76,7 +76,7 @@ class Gui():
         menubar = Menu(root)
         filemenu = Menu(menubar, tearoff=0)
         filemenu.add_command(label="Load", command=lambda: self.load_file())
-        filemenu.add_command(label="Update", command=lambda: self.update_display({"71.25.180.79": {"mem": 1, "temp": 100}, "108.147.247.58": {"mem": 5, "temp": 500}}))
+        #filemenu.add_command(label="Update", command=lambda: self.update_display({"71.25.180.79": {"mem": 1, "temp": 100}, "108.147.247.58": {"mem": 5, "temp": 500}}))
         menubar.add_cascade(label="File", menu=filemenu)
         filemenu.add_separator()
         #filemenu.add_command(label="Exit", command=lambda: self.gui_exit())
