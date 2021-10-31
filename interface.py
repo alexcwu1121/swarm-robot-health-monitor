@@ -17,8 +17,12 @@ class Gui():
     def __init__(self):
         self.root = self.intialization()
         self.lom = {}
-        while(1):
-            self.root.update()
+        self.loaded_file = ""
+        self.started = False
+        self.root.update()
+
+    def refresh_gui(self):
+        self.root.update()        
 
     def makeCpane(self, name, data):
         cpane = gui.cp(self.root, name, name)
@@ -28,13 +32,16 @@ class Gui():
         return cpane, info
 
     def load_file(self):
+        old_loaded = self.loaded_file
         filename = filedialog.askopenfilename(initialdir='./config',
                                                 title = 'Select a swarm config',
                                                 filetypes=[("Json", '*.json')])
         try:
+            self.loaded_file = filename
             with open(filename) as f:
                 data = json.load(f)
         except:
+            self.loaded_file = old_loaded
             messagebox.showinfo("Config Error", "config json not in correct format!")
             return
         for v in self.lom.values():
@@ -48,6 +55,9 @@ class Gui():
             cpane, info = self.makeCpane(big_dict[i]["name"], big_dict[i])
             self.lom[ip] = {"name":big_dict[i]["name"], "cpane":cpane, "info":info}
             self.lom[ip]["cpane"].grid(row=i, column=0, sticky='nsew')
+
+    def get_config(self):
+        return self.loaded_file
 
     def update_display(self, updates):
         ip = list(updates.keys())[0]
