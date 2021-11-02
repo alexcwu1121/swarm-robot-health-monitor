@@ -8,6 +8,7 @@ of datas and returns a dictionary of labels with the data
 
 import tkinter as tk
 from tkinter import ttk
+import tkinter.font as font
 
 class InfoDisplay(ttk.Frame):
 
@@ -15,12 +16,14 @@ class InfoDisplay(ttk.Frame):
         ttk.Frame.__init__(self, parent)				
         self.parent = parent
         self._r = 0
+        myFont = font.Font(weight="bold")
         #ip address as string
         self._ip = ttk.Label(self, 
                                 text=('ip: ' + info['ip']), 
                                 justify=tk.LEFT,
-                                borderwidth = 2,
+                                borderwidth = 0,
                                 relief="ridge")
+        self._ip['font'] = myFont
         self._ip.grid(row = self._r, 
                         column = 0, 
                         sticky='w')
@@ -31,16 +34,17 @@ class InfoDisplay(ttk.Frame):
 
     def _create_text_list(self, info):
         data = {}
-        i = 0
+        myFont = font.Font(weight="bold")
+        i = 1
         for k, v in info.items():
             data[k] = ttk.Label(self, 
                                     text=(k+': '+v), 
                                     justify=tk.LEFT,
-                                    borderwidth = 2,
-                                    relief="ridge",
-                                    width=20)
-            data[k].grid(row = self._r, 
-                            column = i, 
+                                    borderwidth = 0,
+                                    relief="ridge")
+            data[k]['font'] = myFont
+            data[k].grid(row = i, 
+                            column = 0, 
                             sticky='w')
             i = i + 1
         return data
