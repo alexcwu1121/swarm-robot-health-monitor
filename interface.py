@@ -37,6 +37,10 @@ class Gui():
         except:
             messagebox.showinfo("Config Error", "config json not in correct format!")
             return
+        for v in self.lom.values():
+            v["cpane"].destroy()
+            v["info"].destroy()
+        self.lom.clear()
 
         big_dict = data["mlist"]
         for i in range(0, len(big_dict)):
