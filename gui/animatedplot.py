@@ -9,9 +9,8 @@ import random
 #The root param is the root 
 #The seconds param is for how long in the past it should track, this is the range of the x axis
 #Min and max determin range of y axis
-class animatedplot(ttk.Frame):
-    def __init__(self, parent, seconds, min, max):
-        ttk.Frame.__init__(self, parent)    
+class animatedplot():
+    def __init__(self, parent, seconds, min, max): 
         plt.rcParams["figure.figsize"] = [3.00, 1.50]
         plt.rcParams["figure.autolayout"] = True
 
@@ -22,9 +21,6 @@ class animatedplot(ttk.Frame):
 
         self.canvas = FigureCanvasTkAgg(self.fig, master=parent)
         self.canvas.draw()
-        self.canvas.get_tk_widget().grid(row = 0, 
-                                            column = 0, 
-                                            sticky='w')
 
         self.seconds = seconds
         self.data = [0] * seconds
@@ -38,3 +34,6 @@ class animatedplot(ttk.Frame):
         y = self.data
         self.line.set_data(x, y)
         self.canvas.draw()
+
+    def getCanvas(self):
+        return self.canvas
