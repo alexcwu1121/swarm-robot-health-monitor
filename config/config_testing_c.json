@@ -12,6 +12,15 @@
           "svmem_percentage": "percent",
           "cpu_percent": "percent",
           "ext_sensors": "u"
+        },
+        "graph" :
+        {
+          "cpu_percent": 
+          {
+            "length": "30",
+            "min": "0",
+            "max": "100"
+          }
         }
     },
     {
