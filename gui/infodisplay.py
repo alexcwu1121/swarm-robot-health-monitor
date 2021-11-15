@@ -73,5 +73,6 @@ class InfoDisplay(ttk.Frame):
 
     def set_data(self, k, v):
         self._data[k].config(text=str(v))
-        self._plots[k].update(int(v.split()[-1]))
+        if v.split()[-1] != '0':
+            self._plots[k].update(float(v.split()[-1][1:-2]))
 

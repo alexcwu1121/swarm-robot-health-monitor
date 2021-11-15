@@ -15,7 +15,7 @@
         },
         "graph" :
         {
-          "cpu_percent": 
+          "svmem_percentage": 
           {
             "length": "30",
             "min": "0",
