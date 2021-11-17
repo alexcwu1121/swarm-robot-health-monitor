@@ -43,6 +43,19 @@ class Display(Service):
                 self.state[item['ip']][key] = 0
         time.sleep(0.5)
 
+    def relode(self):
+        self.config = self.g.get_config()
+        del self.comms
+        self.comms = Comms()
+        self.state.clear()
+
+        for item in self.config['mlist']:
+            self.comms.add_subscriber_port(item['ip'], item['port'], item['ip'])
+            self.state[item['ip']] = dict()
+            for key in item['data'].keys():
+                self.state[item['ip']][key] = 0
+        time.sleep(0.5)
+
     #(will be) used to add or remove subscribers when the user adds or removes robots
     def update_options(self):
         # Placeholder for when dispatcher becomes a thing
