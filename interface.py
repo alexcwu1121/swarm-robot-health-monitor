@@ -24,12 +24,12 @@ class Gui():
     def refresh_gui(self):
         self.root.update()        
 
-    def makeCpane(self, name, data):
+    def makeCpane(self, name, data, graph):
         cpane = gui.cp(self.root, name, name)
         cpane.grid(row = 0, column = 0, sticky = 'w')
-        info = gui.infd(cpane.frame, data)
+        info = gui.infd(cpane.frame, data, graph)
         info.grid(row = 1, column = 0)
-        return cpane, info
+        return cpane, info, graph
 
     def load_file(self):
         old_loaded = self.loaded_file
@@ -52,8 +52,8 @@ class Gui():
         big_dict = data["mlist"]
         for i in range(0, len(big_dict)):
             ip = big_dict[i]["ip"]
-            cpane, info = self.makeCpane(big_dict[i]["name"], big_dict[i])
-            self.lom[ip] = {"name":big_dict[i]["name"], "cpane":cpane, "info":info}
+            cpane, info, graph = self.makeCpane(big_dict[i]["name"], big_dict[i], big_dict[i].get("graph", {}))
+            self.lom[ip] = {"name":big_dict[i]["name"], "cpane":cpane, "info":info, "graph":graph}
             self.lom[ip]["cpane"].grid(row=i, column=0, sticky='nsew')
 
     def get_config(self):

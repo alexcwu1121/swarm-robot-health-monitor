@@ -12,6 +12,15 @@
           "mem": "percent",
           "sonic_1" : "sonic_rangefinder",
           "gyroscope_1" : "gyroscope"
+        },
+        "graph" :
+        {
+          "temp": 
+          {
+            "length": "30",
+            "min": "0",
+            "max": "100"
+          }
         }
     },
     {
