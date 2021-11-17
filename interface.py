@@ -7,9 +7,11 @@ Description:This file implement majority of the main functionalities of our GUI 
 
 import gui
 import json
+import copy
 from tkinter import * 
 from tkinter import filedialog
 from tkinter import messagebox
+from tkinter import simpledialog
 from ttkthemes import ThemedTk
 
 
@@ -19,6 +21,7 @@ class Gui():
         self.lom = {}
         self.loaded_file = ""
         self.data = {}
+        self.reloded_required = False
         self.started = False
         self.root.update()
 
@@ -28,7 +31,7 @@ class Gui():
     def makeCpane(self, name, data, graph):
         cpane = gui.cp(self.root, name, name)
         cpane.grid(row = 0, column = 0, sticky = 'w')
-        info = gui.infd(cpane.frame, data, graph)
+        info = gui.infd(cpane.frame, data, graph, self)
         info.grid(row = 1, column = 0)
         return cpane, info, graph
 
@@ -45,17 +48,8 @@ class Gui():
             self.loaded_file = old_loaded
             messagebox.showinfo("Config Error", "config json not in correct format!")
             return
-        for v in self.lom.values():
-            v["cpane"].destroy()
-            v["info"].destroy()
-        self.lom.clear()
 
-        big_dict = self.data["mlist"]
-        for i in range(0, len(big_dict)):
-            ip = big_dict[i]["ip"]
-            cpane, info, graph = self.makeCpane(big_dict[i]["name"], big_dict[i], big_dict[i].get("graph", {}))
-            self.lom[ip] = {"name":big_dict[i]["name"], "cpane":cpane, "info":info, "graph":graph}
-            self.lom[ip]["cpane"].grid(row=i, column=0, sticky='nsew')
+        self.relode()
 
     def save_file(self):
         old_loaded = self.loaded_file
@@ -70,10 +64,67 @@ class Gui():
             return
 
     def add_robot(self):
-        pass
+        name = simpledialog.askstring(title="Name", prompt="Enter machine name:")
+        ip = simpledialog.askstring(title="IP", prompt="Enter machine IP:")
+        port = simpledialog.askstring(title="Port", prompt="Enter machine Port:")
+        if name != None and ip != None and port != None:
+            self.data['mlist'].append({ 'ip': ip, 
+                                        'port': port, 
+                                        'name': name,             
+                                        'update_interval': '0.1',
+                                        'agg_interval': '0.1',
+                                        'data': {}})
+            self.relode()
+
+    def rmv_robot(self):
+        name = simpledialog.askstring(title="Name", prompt="Enter machine name to remove:")
+        if name != None:
+            for item in self.data['mlist']:
+                if item['name'] == name:
+                    self.data['mlist'].remove(item)
+            self.relode()
+
+    def add_value(self, ip):
+        name = simpledialog.askstring(title="Name", prompt="Enter the name of the data stream:")
+        unit = simpledialog.askstring(title="Units", prompt="Enter units it is measured in:")
+        if name != None and unit != None:
+            for item in self.data['mlist']:
+                if item['ip'] == ip:
+                    item['data'][name] = unit
+            self.relode()
+
+    def rmv_value(self, ip):
+        name = simpledialog.askstring(title="Name", prompt="Enter the name of the data stream to remove:")
+        if name != None:
+            for item in self.data['mlist']:
+                if item['ip'] == ip:
+                    if name in item['data'].keys():
+                        del item['data'][name]
+            self.relode()
+
+    def relode(self):
+        for v in self.lom.values():
+            v["cpane"].destroy()
+            v["info"].destroy()
+        self.lom.clear()
+
+        big_dict = self.data["mlist"]
+        for i in range(0, len(big_dict)):
+            ip = big_dict[i]["ip"]
+            cpane, info, graph = self.makeCpane(big_dict[i]["name"], big_dict[i], big_dict[i].get("graph", {}))
+            self.lom[ip] = {"name":big_dict[i]["name"], "cpane":cpane, "info":info, "graph":graph, "ip":ip}
+            self.lom[ip]["cpane"].grid(row=i, column=0, sticky='nsew')
+        self.reloded_required = True
+
+
+    def get_relode(self):
+        return self.reloded_required
+
+    def inform_reloded(self):
+        self.reloded_required = False
 
     def get_config(self):
-        return self.loaded_file
+        return self.data
 
     def update_display(self, updates):
         ip = list(updates.keys())[0]
@@ -107,6 +158,8 @@ class Gui():
         filemenu = Menu(menubar, tearoff=0)
         filemenu.add_command(label="Load", command=lambda: self.load_file())
         filemenu.add_command(label="Save", command=lambda: self.save_file())
+        filemenu.add_command(label="Add Robot", command=lambda: self.add_robot())
+        filemenu.add_command(label="Remove Robot", command=lambda: self.rmv_robot())
         #filemenu.add_command(label="Update", command=lambda: self.update_display({"71.25.180.79": {"mem": 1, "temp": 100}, "108.147.247.58": {"mem": 5, "temp": 500}}))
         menubar.add_cascade(label="File", menu=filemenu)
         filemenu.add_separator()
