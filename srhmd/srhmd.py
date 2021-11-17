@@ -20,6 +20,7 @@ class Srhmd:
             - name: String
                 Robot identifier
             - comms: Comms
+                Message queue manager
                 Set up producer to server IP on port 3000
                 Set up consumer on port 3100 to accept sensor data
             - ext_states: Dict<String:Float>
