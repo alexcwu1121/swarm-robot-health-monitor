@@ -10,6 +10,9 @@ import sys
 import os
 import json
 
+#sets up and runs a service
+#type: the type of service that worker is running
+#service_config: the configuration of the service being run
 def worker(type, service_config):
     if type == 'Display':
         display = Display(service_config)
@@ -17,6 +20,7 @@ def worker(type, service_config):
     else:
         print("No such service")
 
+#launches all the services need for the application
 def main():
     # launch services
     procs = []
