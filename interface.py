@@ -18,6 +18,7 @@ class Gui():
         self.root = self.intialization()
         self.lom = {}
         self.loaded_file = ""
+        self.data = {}
         self.started = False
         self.root.update()
 
@@ -39,7 +40,7 @@ class Gui():
         try:
             self.loaded_file = filename
             with open(filename) as f:
-                data = json.load(f)
+                self.data = json.load(f)
         except:
             self.loaded_file = old_loaded
             messagebox.showinfo("Config Error", "config json not in correct format!")
@@ -49,12 +50,27 @@ class Gui():
             v["info"].destroy()
         self.lom.clear()
 
-        big_dict = data["mlist"]
+        big_dict = self.data["mlist"]
         for i in range(0, len(big_dict)):
             ip = big_dict[i]["ip"]
             cpane, info, graph = self.makeCpane(big_dict[i]["name"], big_dict[i], big_dict[i].get("graph", {}))
             self.lom[ip] = {"name":big_dict[i]["name"], "cpane":cpane, "info":info, "graph":graph}
             self.lom[ip]["cpane"].grid(row=i, column=0, sticky='nsew')
+
+    def save_file(self):
+        old_loaded = self.loaded_file
+        file = filedialog.asksaveasfile(initialdir='./config',
+                                                title = 'Save swarm config',
+                                                filetypes=[("Json", '*.json')])
+        try:
+            json.dump(self.data, file,  indent=4)
+            self.loaded_file = file.name
+        except:
+            messagebox.showinfo("Config Error", "failed to save config file!")
+            return
+
+    def add_robot(self):
+        pass
 
     def get_config(self):
         return self.loaded_file
@@ -90,6 +106,7 @@ class Gui():
         menubar = Menu(root)
         filemenu = Menu(menubar, tearoff=0)
         filemenu.add_command(label="Load", command=lambda: self.load_file())
+        filemenu.add_command(label="Save", command=lambda: self.save_file())
         #filemenu.add_command(label="Update", command=lambda: self.update_display({"71.25.180.79": {"mem": 1, "temp": 100}, "108.147.247.58": {"mem": 5, "temp": 500}}))
         menubar.add_cascade(label="File", menu=filemenu)
         filemenu.add_separator()
