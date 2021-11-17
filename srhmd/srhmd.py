@@ -17,12 +17,17 @@ class Srhmd:
     def __init__(self, config_path="resources/srhmd_test_config.json"):
         """
         Attributes:
-        - comms
-            Set up producer to server IP on port 3000. Needs to be configurable
-                TODO: Don't hardcode exposed port on server
-            Set up consumer on port 3100 to accept sensor data
-        - ext_states
-            dictionary holding extrinsic data states
+            - name: String
+                Robot identifier
+            - comms: Comms
+                Set up producer to server IP on port 3000
+                Set up consumer on port 3100 to accept sensor data
+            - ext_states: Dict<String:Float>
+                Extrinsic data states
+            - update_interval: Float
+                Extrinsic sensor read rate
+            - agg_interval: Float
+                Messaging rate to server
         """
         self.name = self.get_ip()
         self.comms = Comms()
@@ -38,6 +43,7 @@ class Srhmd:
 
     @staticmethod
     def get_ip():
+        """Grab host ip"""
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         try:
             s.connect(('10.255.255.255', 1))
@@ -118,5 +124,6 @@ class Srhmd:
             thread.join()
 
 if __name__ == "__main__":
+    # Local boilerplate
     srhmd = Srhmd("srhmd_conf/config.json")
     srhmd.run()
