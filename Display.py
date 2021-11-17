@@ -18,10 +18,23 @@ class Display(Service):
         self.g = inter.Gui()
 
         # wait for the user to pick a file
-        while (self.g.get_config() == ''):
+        while (len(self.g.get_config()) == 0):
             self.g.refresh_gui()
 
-        self.config = json.loads(open(self.g.get_config()).read())
+        self.config = self.g.get_config()
+
+        for item in self.config['mlist']:
+            self.comms.add_subscriber_port(item['ip'], item['port'], item['ip'])
+            self.state[item['ip']] = dict()
+            for key in item['data'].keys():
+                self.state[item['ip']][key] = 0
+        time.sleep(0.5)
+
+    def relode(self):
+        self.config = self.g.get_config()
+        del self.comms
+        self.comms = Comms()
+        self.state.clear()
 
         for item in self.config['mlist']:
             self.comms.add_subscriber_port(item['ip'], item['port'], item['ip'])
@@ -65,6 +78,12 @@ class Display(Service):
             self.g.refresh_gui()
             for bot in bot_list:
                 self.g.update_display(bot)
+
+            # Refresh Display if GUI has reloded
+            if self.g.get_relode() == True:
+                self.relode()
+                self.g.inform_reloded()
+
 
 
 if __name__ == "__main__":
