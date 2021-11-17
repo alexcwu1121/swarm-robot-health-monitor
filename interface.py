@@ -1,8 +1,6 @@
 """
-gui.py:     Main file for our Graphical User Interface.
-TODOS:      GUI quit function and Update function.
-Description:This file implement majority of the main functionalities of our GUI object,
-            such as initialization and update functions.
+gui.py
+Main file for our Graphical User Interface.
 """
 
 import gui
@@ -15,6 +13,17 @@ from ttkthemes import ThemedTk
 
 class Gui():
     def __init__(self):
+        """
+        Attributes:
+            - root: tkinter root instance
+                the root for the gui elements
+            - lom: dict<String:String>
+                holds data from configuration file
+            - loaded_file: Dict<String:String>
+                loaded data directly from config json
+            - started: Boolean
+                indicates whether GUI has started or not
+        """
         self.root = self.intialization()
         self.lom = {}
         self.loaded_file = ""
@@ -22,9 +31,18 @@ class Gui():
         self.root.update()
 
     def refresh_gui(self):
+        """Update the gui with changes"""
         self.root.update()        
 
     def makeCpane(self, name, data):
+        """
+        return collapsiblepane object representing a machine
+        Arguments: 
+            - name: String
+                name of the machine
+            - data: dict<String:String>
+                The data the infodisplay object should contain
+        """
         cpane = gui.cp(self.root, name, name)
         cpane.grid(row = 0, column = 0, sticky = 'w')
         info = gui.infd(cpane.frame, data)
@@ -32,6 +50,7 @@ class Gui():
         return cpane, info
 
     def load_file(self):
+        """Load a new config file and update GUI"""
         old_loaded = self.loaded_file
         filename = filedialog.askopenfilename(initialdir='./config',
                                                 title = 'Select a swarm config',
@@ -57,9 +76,17 @@ class Gui():
             self.lom[ip]["cpane"].grid(row=i, column=0, sticky='nsew')
 
     def get_config(self):
+        """return the currently loaded config file"""
         return self.loaded_file
 
     def update_display(self, updates):
+        """
+        Update the gui with updates
+        Arguments: 
+            - updates: dict<String:String>
+                dictionary of updates for the GUI
+
+        """
         ip = list(updates.keys())[0]
         content = updates[ip]
         info = self.lom[ip]["info"].get_data()
@@ -71,17 +98,21 @@ class Gui():
         self.root.update()
 
     def changeName(self, ip, newname):
+        """
+        change the name of a machine
+        Arguments: 
+            - ip: String
+                The ip of the machine
+            - newname: String
+                The name to change the machine to
+
+        """
         self.lom[ip]["name"] = newname
         self.lom[ip]["cpane"].setName(newname)
         self.root.update()
 
-    #
-    #def gui_exit(self):
-    #    self.root.quit
-
-
-    # Making root window or parent window
     def intialization(self):
+        """create the root and options of the GUI"""
         root = ThemedTk(theme="equilux")
         root.geometry('1000x1000')
         root.configure(bg='#464646')
