@@ -11,6 +11,7 @@ import random
 #Min and max determin range of y axis
 class animatedplot():
     def __init__(self, parent, seconds, min, max): 
+        """creates a matplot with given parameters"""
         plt.rcParams["figure.figsize"] = [3.00, 1.50]
         plt.rcParams["figure.autolayout"] = True
 
@@ -25,8 +26,8 @@ class animatedplot():
         self.seconds = seconds
         self.data = [0] * seconds
 
-    #update the plot with a new value
     def update(self, value):
+        """updates plot with new value"""
         self.data.pop(0)
         self.data.append(value)
 
@@ -36,4 +37,5 @@ class animatedplot():
         self.canvas.draw()
 
     def getCanvas(self):
+        """returns the canvas the plot is on"""
         return self.canvas
