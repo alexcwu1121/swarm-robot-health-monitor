@@ -1,6 +1,5 @@
 """
 infodisplay.py: InfoDisplay component for each dropdown display for our GUI.
-TODOS: CHANGE DISPLAY FORMAT TO BE 2 COLUMNS
 Description: This file implement a infodisplay GUI object that takes a dictionary
 of datas and returns a dictionary of labels with the data
 """
