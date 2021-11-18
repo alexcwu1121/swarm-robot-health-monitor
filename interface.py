@@ -71,6 +71,7 @@ class Gui():
         self.relode()
 
     def save_file(self):
+        """saves the current self.dict to a json config"""
         old_loaded = self.loaded_file
         file = filedialog.asksaveasfile(initialdir='./config',
                                                 title = 'Save swarm config',
@@ -83,6 +84,7 @@ class Gui():
             return
 
     def add_robot(self):
+        """prompts the user to enter infromation to create a new machine in self.dict"""
         name = simpledialog.askstring(title="Name", prompt="Enter machine name:")
         ip = simpledialog.askstring(title="IP", prompt="Enter machine IP:")
         port = simpledialog.askstring(title="Port", prompt="Enter machine Port:")
@@ -96,6 +98,7 @@ class Gui():
             self.relode()
 
     def rmv_robot(self):
+        """prompts user name a machine to remove"""
         name = simpledialog.askstring(title="Name", prompt="Enter machine name to remove:")
         if name != None:
             for item in self.data['mlist']:
@@ -104,6 +107,7 @@ class Gui():
             self.relode()
 
     def add_value(self, ip):
+        """prompts user to add a value to a machine at ip"""
         name = simpledialog.askstring(title="Name", prompt="Enter the name of the data stream:")
         unit = simpledialog.askstring(title="Units", prompt="Enter units it is measured in:")
         if name != None and unit != None:
@@ -113,6 +117,7 @@ class Gui():
             self.relode()
 
     def rmv_value(self, ip):
+        """prompts user to remove a value on machine at ip"""
         name = simpledialog.askstring(title="Name", prompt="Enter the name of the data stream to remove:")
         if name != None:
             for item in self.data['mlist']:
@@ -122,6 +127,7 @@ class Gui():
             self.relode()
 
     def relode(self):
+        """relodes based off of current self.dict"""
         for v in self.lom.values():
             v["cpane"].destroy()
             v["info"].destroy()
@@ -137,9 +143,11 @@ class Gui():
 
 
     def get_relode(self):
+        """returns true if relode has been performed"""
         return self.reloded_required
 
     def inform_reloded(self):
+        """Display aknoledging that it has reloded"""
         self.reloded_required = False
 
     def get_config(self):
@@ -152,7 +160,6 @@ class Gui():
         Arguments: 
             - updates: dict<String:String>
                 dictionary of updates for the GUI
-
         """
         ip = list(updates.keys())[0]
         content = updates[ip]
@@ -172,7 +179,6 @@ class Gui():
                 The ip of the machine
             - newname: String
                 The name to change the machine to
-
         """
         self.lom[ip]["name"] = newname
         self.lom[ip]["cpane"].setName(newname)
