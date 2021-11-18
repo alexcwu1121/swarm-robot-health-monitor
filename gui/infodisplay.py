@@ -1,6 +1,5 @@
 """
 infodisplay.py: InfoDisplay component for each dropdown display for our GUI.
-TODOS: CHANGE DISPLAY FORMAT TO BE 2 COLUMNS
 Description: This file implement a infodisplay GUI object that takes a dictionary
 of datas and returns a dictionary of labels with the data
 """
@@ -14,6 +13,9 @@ import gui
 class InfoDisplay(ttk.Frame):
 
     def __init__(self, parent, info, graph, gui):
+        """
+        Initilize Infodisplay from info and graph
+        """
         ttk.Frame.__init__(self, parent)				
         self.parent = parent
         self.graph = graph
@@ -45,6 +47,9 @@ class InfoDisplay(ttk.Frame):
         self._r = self._r + 1
 
     def _create_text_list(self, info):
+        """
+        Create the labels and graphs for the info
+        """
         data = {}
         plots = {}
         separators = []
@@ -78,9 +83,20 @@ class InfoDisplay(ttk.Frame):
         return data, plots, separators
 
     def get_data(self):
+        """
+        return the data stored in this object
+        """
         return self._data
 
     def set_data(self, k, v):
+        """
+        set the data stored in this object
+        Arguments: 
+            k: String
+                the item in data to update
+            v: String
+                the value to update to
+        """
         self._data[k].config(text=str(v))
         if v.split()[-1] != '0':
             self._plots[k].update(float(v.split()[-1][1:-2]))
