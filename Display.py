@@ -6,9 +6,14 @@ import interface as inter
 import time
 from Service import Service
 
-
+#Display's purpose is to manage the server's connections to all the robots in the swarm
+#Display does this by creating a subscriber for every robot in the swarm and then keep tracking of the latest updates from these robots
+#these updates are kept track of through an internal dictonary that is updated whenever a new message is sent to the server from a robot
+#containing more up to date information
 class Display(Service):
 
+    #init_config sets up the subscribers
+    #server_conf: currently unused
     def init_config(self, service_conf):
         self.g = inter.Gui()
 
@@ -25,10 +30,12 @@ class Display(Service):
                 self.state[item['ip']][key] = 0
         time.sleep(0.5)
 
+    #(will be) used to add or remove subscribers when the user adds or removes robots
     def update_options(self):
         # Placeholder for when dispatcher becomes a thing
         pass
 
+    #used to listen for messages from the subscribers and update the internal state dictonary with new data when new messages are received
     def transform(self):
         # Display applies no transformations and publishes nothing
         for ip in self.state.keys():
@@ -38,6 +45,8 @@ class Display(Service):
                     self.state[ip][key] = [msg_recv.payload[key]]
         return None
 
+    #indefinitely checks for new messages and updates the GUI with the current status of the robots
+    #Updates to GUI are sent even if no messages have been recieved since the last update
     def run(self):
         while True:
             # update state and transform data
