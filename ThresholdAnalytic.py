@@ -25,7 +25,7 @@ class ThresholdAnalytic(Service):
             self.comms.add_subscriber_port(item['ip'], item['port'], item['ip'])
             self.state[item['ip']] = dict()
             for key in item['data'].keys():
-                self.state[item['ip']][key] = [0]
+                self.state[item['ip']][key] = 0
 
         # Connect to analytics according to config
         ip = self.analytic_config['Threshold']['publish']['ip']
@@ -43,7 +43,7 @@ class ThresholdAnalytic(Service):
             msg_recv = self.comms.get(ip)
             if msg_recv is not None:
                 for key in msg_recv.payload.keys():
-                    self.state[ip][key] = [msg_recv.payload[key]]
+                    self.state[ip][key] = msg_recv.payload[key]
         return
 
     # take a threshold dictionary and a robot's current state and return threshold condition for each sensor
@@ -52,13 +52,13 @@ class ThresholdAnalytic(Service):
         for sensor in state.keys():
             # If the data isn't a string, assume threshold satisfied
             try:
-                float(state[sensor][0])
+                float(state[sensor])
             except ValueError:
                 threshold[sensor] = True
                 continue
 
             if sensor in bounds.keys():
-                if float(bounds[sensor]['min']) < float(state[sensor][0]) < float(bounds[sensor]['max']):
+                if float(bounds[sensor]['min']) < float(state[sensor]) < float(bounds[sensor]['max']):
                     threshold[sensor] = True
                 else:
                     threshold[sensor] = False

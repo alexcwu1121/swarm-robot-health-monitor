@@ -49,9 +49,11 @@ class Gui():
 		"""
 		cpane = gui.cp(self.root, name, name)
 		cpane.grid(row = 0, column = 0, sticky = 'w')
+		status = gui.light(self.root)
+		status.grid(row = 0, column = 1, sticky = 'w')
 		info = gui.infd(cpane.frame, data, graph, self)
 		info.grid(row = 1, column = 0)
-		return cpane, info, graph
+		return cpane, info, graph, status
 
 	def load_file(self):
 		"""Load a new config file and update GUI"""
@@ -136,9 +138,10 @@ class Gui():
 		big_dict = self.data["mlist"]
 		for i in range(0, len(big_dict)):
 			ip = big_dict[i]["ip"]
-			cpane, info, graph = self.makeCpane(big_dict[i]["name"], big_dict[i], big_dict[i].get("graph", {}))
-			self.lom[ip] = {"name":big_dict[i]["name"], "cpane":cpane, "info":info, "graph":graph, "ip":ip}
+			cpane, info, graph, status = self.makeCpane(big_dict[i]["name"], big_dict[i], big_dict[i].get("graph", {}))
+			self.lom[ip] = {"name":big_dict[i]["name"], "cpane":cpane, "info":info, "graph":graph, "status":status, "ip":ip}
 			self.lom[ip]["cpane"].grid(row=i, column=0, sticky='nsew')
+			self.lom[ip]["status"].grid(row=i, column=1, sticky='nsew')
 		self.reloded_required = True
 
 
@@ -169,6 +172,15 @@ class Gui():
 				self.lom[ip]["info"].set_data(k, content[k])
 			except KeyError:
 				pass
+		status = "disconnect"
+		try:
+			status = updates[ip]['Status']
+		except KeyError:
+			pass
+		try:
+			self.lom[ip]["status"].set_status(status)
+		except KeyError:
+			pass
 		self.root.update()
 
 	def changeName(self, ip, newname):

@@ -21,11 +21,11 @@ class StatusLight(ttk.Frame):
 
     def set_status(self, status):
         self.canvas.delete("all")
-        if(status==-1):
+        if(status=="disconnect"):
             self.canvas.create_image(20, 20, anchor='center', image=self.grey)
-        elif(status==1):
+        elif(status=="warning"):
             self.canvas.create_image(20, 20, anchor='center', image=self.yellow)
-        elif(status==0):
+        elif(status=="nominal"):
             self.canvas.create_image(20, 20, anchor='center', image=self.green)
-        elif(status==2):
+        elif(status=="critical"):
             self.canvas.create_image(20, 20, anchor='center', image=self.red)
