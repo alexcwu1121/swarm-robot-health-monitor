@@ -4,7 +4,7 @@ Description: Base class for server analytics
 """
 
 from abc import ABC, abstractmethod
-from comms import Comms
+from Comms import Comms
 
 class Service(ABC):
     def __init__(self, service_conf):

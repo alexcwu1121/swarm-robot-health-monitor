@@ -9,7 +9,7 @@ import random
 #The root param is the root 
 #The seconds param is for how long in the past it should track, this is the range of the x axis
 #Min and max determin range of y axis
-class animatedplot():
+class AnimatedPlot():
     def __init__(self, parent, seconds, min, max): 
         """creates a matplot with given parameters"""
         plt.rcParams["figure.figsize"] = [3.00, 1.50]

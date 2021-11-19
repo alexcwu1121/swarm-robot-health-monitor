@@ -6,7 +6,7 @@ Daemon running on robot hosts that:
     - Sends aggregated message to server
 """
 
-from comms import Comms, Message
+from Comms import Comms, Message
 import threading
 import psutil
 import time

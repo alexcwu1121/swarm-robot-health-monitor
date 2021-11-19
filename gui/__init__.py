@@ -1,4 +1,4 @@
-from .collapsiblepane import CollapsiblePane as cp
-from .infodisplay import InfoDisplay as infd
-from .animatedplot import animatedplot as animplot
-from .statuslight import StatusLight as light
+from .CollapsiblePane import CollapsiblePane as cp
+from .InfoDisplay import InfoDisplay as infd
+from .AnimatedPlot import AnimatedPlot as animplot
+from .StatusLight import StatusLight as light

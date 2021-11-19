@@ -1,10 +1,9 @@
-from comms import Comms
+from Comms import Comms
 import sys
-import interface as inter
 import json
 import time
 from Service import Service
-from comms import Message
+from Comms import Message
 
 class StatusAnalytic(Service):
 
