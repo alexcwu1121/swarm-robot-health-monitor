@@ -56,7 +56,7 @@ class ThresholdAnalytic(Service):
                 continue
 
             if sensor in bounds.keys():
-                if float(bounds[sensor]['min']) < float(state[sensor]) < float(bounds[sensor]['max']):
+                if float(bounds[sensor]['min']) <= float(state[sensor]) <= float(bounds[sensor]['max']):
                     threshold[sensor] = True
                 else:
                     threshold[sensor] = False
