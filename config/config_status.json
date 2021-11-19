@@ -1,0 +1,22 @@
+{
+	"Status":{
+    "publish":{
+      "ip": "127.0.0.1",
+      "port": "2901"
+    },
+
+    "subscribe": [
+      {
+        "ip": "127.0.0.1",
+        "port": "2900",
+        "topic": "Threshold"
+      }
+    ],
+
+    "conditions": {
+      "nominal": "0",
+      "warning": "1",
+      "critical": "2"
+    }
+  }
+}

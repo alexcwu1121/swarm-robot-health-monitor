@@ -23,11 +23,19 @@ class Display(Service):
 
         self.config = self.g.get_config()
 
+        # Connect to robots
         for item in self.config['mlist']:
             self.comms.add_subscriber_port(item['ip'], item['port'], item['ip'])
             self.state[item['ip']] = dict()
             for key in item['data'].keys():
                 self.state[item['ip']][key] = 0
+
+        # Connect to analytics
+        self.active_analytics = []
+        for item in self.config['alist']:
+            self.comms.add_subscriber_port(item['ip'], item['port'], item['name'])
+            self.active_analytics.append(item['name'])
+
         time.sleep(0.5)
 
     def relode(self):
@@ -41,19 +49,13 @@ class Display(Service):
             self.state[item['ip']] = dict()
             for key in item['data'].keys():
                 self.state[item['ip']][key] = 0
-        time.sleep(0.5)
 
-    def relode(self):
-        self.config = self.g.get_config()
-        del self.comms
-        self.comms = Comms()
-        self.state.clear()
+        # Connect to analytics
+        self.active_analytics = []
+        for item in self.config['alist']:
+            self.comms.add_subscriber_port(item['ip'], item['port'], item['name'])
+            self.active_analytics.append(item['name'])
 
-        for item in self.config['mlist']:
-            self.comms.add_subscriber_port(item['ip'], item['port'], item['ip'])
-            self.state[item['ip']] = dict()
-            for key in item['data'].keys():
-                self.state[item['ip']][key] = 0
         time.sleep(0.5)
 
     #(will be) used to add or remove subscribers when the user adds or removes robots
@@ -64,8 +66,15 @@ class Display(Service):
     #used to listen for messages from the subscribers and update the internal state dictonary with new data when new messages are received
     def transform(self):
         # Display applies no transformations and publishes nothing
+        # Check for new messages over every analytic manually
+        if "Status" in self.active_analytics:
+            msg_status = self.comms.get("Status")
+            if msg_status is not None:
+                self.state[msg_status.topic]["Status"] = [msg_status.payload["Status"]]
+
         for ip in self.state.keys():
-            msg_recv = self.comms.get(ip)
+            # Check status data
+            msg_recv = self.comms.get_clear(ip)
             if msg_recv is not None:
                 for key in msg_recv.payload.keys():
                     self.state[ip][key] = [msg_recv.payload[key]]
@@ -77,6 +86,8 @@ class Display(Service):
         while True:
             # update state and transform data
             self.transform()
+
+            print(self.state)
 
             # Prepare states for GUI
             bot_list = list()
