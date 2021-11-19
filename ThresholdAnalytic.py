@@ -1,4 +1,3 @@
-from Comms import Comms
 import sys
 import json
 import time
