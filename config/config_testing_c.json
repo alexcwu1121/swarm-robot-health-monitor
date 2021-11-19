@@ -51,5 +51,13 @@
         "ext_sensors": "u"
       }
     }
+  ],
+
+  "alist":[
+    {
+      "ip": "127.0.0.1",
+      "port": "2900",
+      "name": "status"
+    }
   ]
 }
