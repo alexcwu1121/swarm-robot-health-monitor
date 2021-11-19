@@ -70,14 +70,14 @@ class Display(Service):
         if "Status" in self.active_analytics:
             msg_status = self.comms.get("Status")
             if msg_status is not None:
-                self.state[msg_status.topic]["Status"] = [msg_status.payload["Status"]]
+                self.state[msg_status.topic]["Status"] = msg_status.payload["Status"]
 
         for ip in self.state.keys():
             # Check status data
             msg_recv = self.comms.get_clear(ip)
             if msg_recv is not None:
                 for key in msg_recv.payload.keys():
-                    self.state[ip][key] = [msg_recv.payload[key]]
+                    self.state[ip][key] = msg_recv.payload[key]
         return None
 
     #indefinitely checks for new messages and updates the GUI with the current status of the robots
@@ -87,7 +87,7 @@ class Display(Service):
             # update state and transform data
             self.transform()
 
-            print(self.state)
+            #print(self.state)
 
             # Prepare states for GUI
             bot_list = list()
@@ -95,7 +95,8 @@ class Display(Service):
                 ret_state = dict()
                 ret_state[ip] = dict()
                 for key in self.state[ip].keys():
-                    ret_state[ip][key] = key + " : " + str(self.state[ip][key])
+                    #ret_state[ip][key] = key + " : " + str(self.state[ip][key])
+                    ret_state[ip][key] = str(self.state[ip][key])
                 bot_list.append(ret_state)
 
             # Update GUI

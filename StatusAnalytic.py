@@ -37,15 +37,15 @@ class StatusAnalytic(Service):
                 self.state[msg_recv.topic] = {}
 
             for key in msg_recv.payload.keys():
-                self.state[msg_recv.topic][key] = [msg_recv.payload[key]]
+                self.state[msg_recv.topic][key] = msg_recv.payload[key]
         return
 
     def get_status(self, state):
         status = {}
 
         values = list(state.values())
-        failures = len(values) - sum([value[0] for value in values])
-        print(failures)
+        failures = len(values) - sum([value for value in values])
+        #print(failures)
 
         if failures <= int(self.status_conditions["nominal"]):
             status["Status"] = "nominal"
