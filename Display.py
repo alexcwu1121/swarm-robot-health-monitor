@@ -1,3 +1,11 @@
+"""
+Display.py
+manages the server's connections to all the robots in the swarm
+    - creates a subscriber for every robot in the swarm 
+    - tracks the latest updates from the robots
+    - maintains an internal dictonary that is updated whenever a new message is sent to the server from a robot
+"""
+
 from Comms import Comms
 import json
 import sys
@@ -6,15 +14,26 @@ import Interface as inter
 import time
 from Service import Service
 
-#Display's purpose is to manage the server's connections to all the robots in the swarm
-#Display does this by creating a subscriber for every robot in the swarm and then keep tracking of the latest updates from these robots
-#these updates are kept track of through an internal dictonary that is updated whenever a new message is sent to the server from a robot
-#containing more up to date information
+
+
 class Display(Service):
 
-    #init_config sets up the subscribers
-    #server_conf: currently unused
+
     def init_config(self, service_conf):
+        """
+        Attributes:
+            - state: dictonary
+                most up to date state of the robots
+            - comms: Comms
+                Message queue manager
+                Set up producer to server IP on port 3000
+                Set up consumer on port 3100 to accept sensor data
+            - g: Interface
+                the GUI
+            - config: dict
+                config information about the swarm
+        """
+        
         self.g = inter.Interface()
 
         # wait for the user to pick a file
@@ -39,6 +58,9 @@ class Display(Service):
         time.sleep(0.5)
 
     def reload(self):
+        """
+        dumps the subscribers and state and then goes through and re checks the config 
+        """
         self.config = self.g.get_config()
         del self.comms
         self.comms = Comms()
@@ -58,13 +80,16 @@ class Display(Service):
 
         time.sleep(0.5)
 
-    #(will be) used to add or remove subscribers when the user adds or removes robots
     def update_options(self):
-        # Placeholder for when dispatcher becomes a thing
+        """
+        Placeholder for when dispatcher becomes a thing
+        """
         pass
 
-    #used to listen for messages from the subscribers and update the internal state dictonary with new data when new messages are received
     def transform(self):
+        """
+        used to listen for messages from the subscribers and update the internal state dictonary with new data when new messages are received
+        """
         # Display applies no transformations and publishes nothing
         # Check for new messages over every analytic manually
         if "Status" in self.active_analytics:
@@ -80,9 +105,11 @@ class Display(Service):
                     self.state[ip][key] = msg_recv.payload[key]
         return None
 
-    #indefinitely checks for new messages and updates the GUI with the current status of the robots
-    #Updates to GUI are sent even if no messages have been recieved since the last update
     def run(self):
+        """
+        indefinitely checks for new messages and updates the GUI with the current status of the robots
+        Updates to GUI are sent even if no messages have been recieved since the last update
+        """
         while True:
 
             # Refresh Display if GUI has reloadd
