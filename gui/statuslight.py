@@ -1,6 +1,6 @@
 import tkinter as tk
-from tkinter import Canvas, ttk
 import os
+from tkinter import Canvas, ttk
 from PIL import ImageTk,Image
 
 class StatusLight(ttk.Frame):
