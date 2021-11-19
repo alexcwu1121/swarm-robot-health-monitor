@@ -43,8 +43,9 @@ class StatusAnalytic(Service):
         status = {}
 
         values = list(state.values())
-        failures = len(values) - sum([value for value in values])
-        #print(failures)
+        failures = len(values) - sum(values)
+        print(state)
+        print(failures)
 
         if failures <= int(self.status_conditions["nominal"]):
             status["Status"] = "nominal"
