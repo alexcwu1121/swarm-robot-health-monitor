@@ -1,8 +1,8 @@
-from comms import Comms
+from Comms import Comms
 import json
 import sys
 import threading
-import interface as inter
+import Interface as inter
 import time
 from Service import Service
 
@@ -15,7 +15,7 @@ class Display(Service):
     #init_config sets up the subscribers
     #server_conf: currently unused
     def init_config(self, service_conf):
-        self.g = inter.Gui()
+        self.g = inter.Interface()
 
         # wait for the user to pick a file
         while (len(self.g.get_config()) == 0):
@@ -38,7 +38,7 @@ class Display(Service):
 
         time.sleep(0.5)
 
-    def relode(self):
+    def reload(self):
         self.config = self.g.get_config()
         del self.comms
         self.comms = Comms()
@@ -84,8 +84,17 @@ class Display(Service):
     #Updates to GUI are sent even if no messages have been recieved since the last update
     def run(self):
         while True:
+
+            # Refresh Display if GUI has reloadd
+            if self.g.get_reload() == True:
+                self.reload()
+                self.g.inform_reload()
+
             # update state and transform data
-            self.transform()
+            try:
+                self.transform()
+            except KeyError:
+                pass
 
             #print(self.state)
 
@@ -103,11 +112,6 @@ class Display(Service):
             self.g.refresh_gui()
             for bot in bot_list:
                 self.g.update_display(bot)
-
-            # Refresh Display if GUI has reloded
-            if self.g.get_relode() == True:
-                self.relode()
-                self.g.inform_reloded()
 
 
 

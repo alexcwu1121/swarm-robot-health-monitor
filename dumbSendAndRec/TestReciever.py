@@ -1,4 +1,4 @@
-from comms import Comms, Message
+from Comms import Comms, Message
 from datetime import datetime
 from datetime import time
 import multiprocessing as mp

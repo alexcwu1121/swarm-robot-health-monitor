@@ -12,7 +12,7 @@ from tkinter import simpledialog
 from ttkthemes import ThemedTk
 
 
-class Gui():
+class Interface():
 	def __init__(self):
 		"""
 		Attributes:
@@ -29,7 +29,7 @@ class Gui():
 		self.lom = {}
 		self.loaded_file = ""
 		self.data = {}
-		self.reloded_required = False
+		self.reloadd_required = False
 		self.started = False
 		self.root.update()
 
@@ -37,7 +37,7 @@ class Gui():
 		"""Update the gui with changes"""
 		self.root.update()        
 
-	def makeCpane(self, name, data, graph):
+	def make_cpane(self, name, data, graph):
 		"""
 		return collapsiblepane object representing a machine
 		Arguments: 
@@ -69,7 +69,7 @@ class Gui():
 			messagebox.showinfo("Config Error", "config json not in correct format!")
 			return
 
-		self.relode()
+		self.reload()
 
 	def save_file(self):
 		"""saves the current self.dict to a json config"""
@@ -96,7 +96,7 @@ class Gui():
 										'update_interval': '0.1',
 										'agg_interval': '0.1',
 										'data': {}})
-			self.relode()
+			self.reload()
 
 	def rmv_robot(self):
 		"""prompts user name a machine to remove"""
@@ -105,7 +105,7 @@ class Gui():
 			for item in self.data['mlist']:
 				if item['name'] == name:
 					self.data['mlist'].remove(item)
-			self.relode()
+			self.reload()
 
 	def add_value(self, ip):
 		"""prompts user to add a value to a machine at ip"""
@@ -115,7 +115,7 @@ class Gui():
 			for item in self.data['mlist']:
 				if item['ip'] == ip:
 					item['data'][name] = unit
-			self.relode()
+			self.reload()
 
 	def rmv_value(self, ip):
 		"""prompts user to remove a value on machine at ip"""
@@ -125,32 +125,33 @@ class Gui():
 				if item['ip'] == ip:
 					if name in item['data'].keys():
 						del item['data'][name]
-			self.relode()
+			self.reload()
 
-	def relode(self):
-		"""relodes based off of current self.dict"""
+	def reload(self):
+		"""reloads based off of current self.dict"""
 		for v in self.lom.values():
 			v["cpane"].destroy()
 			v["info"].destroy()
+			v["status"].destroy()
 		self.lom.clear()
 
 		big_dict = self.data["mlist"]
 		for i in range(0, len(big_dict)):
 			ip = big_dict[i]["ip"]
-			cpane, info, graph, status = self.makeCpane(big_dict[i]["name"], big_dict[i], big_dict[i].get("graph", {}))
+			cpane, info, graph, status = self.make_cpane(big_dict[i]["name"], big_dict[i], big_dict[i].get("graph", {}))
 			self.lom[ip] = {"name":big_dict[i]["name"], "cpane":cpane, "info":info, "graph":graph, "status":status, "ip":ip}
 			self.lom[ip]["cpane"].grid(row=i, column=0, sticky='nsew')
 			self.lom[ip]["status"].grid(row=i, column=1, sticky='nsew')
-		self.reloded_required = True
+		self.reloadd_required = True
 
 
-	def get_relode(self):
-		"""returns true if relode has been performed"""
-		return self.reloded_required
+	def get_reload(self):
+		"""returns true if reload has been performed"""
+		return self.reloadd_required
 
-	def inform_reloded(self):
-		"""Display aknoledging that it has reloded"""
-		self.reloded_required = False
+	def inform_reload(self):
+		"""Display aknoledging that it has reloadd"""
+		self.reloadd_required = False
 
 	def get_config(self):
 		"""return the currently loaded config file"""
@@ -165,7 +166,10 @@ class Gui():
 		"""
 		ip = list(updates.keys())[0]
 		content = updates[ip]
-		info = self.lom[ip]["info"].get_data()
+		try:
+			info = self.lom[ip]["info"].get_data()
+		except KeyError:
+			return
 		for k in info:
 			try:
 				self.lom[ip]["info"].set_data(k, content[k])
@@ -182,7 +186,7 @@ class Gui():
 			pass
 		self.root.update()
 
-	def changeName(self, ip, newname):
+	def change_name(self, ip, newname):
 		"""
 		change the name of a machine
 		Arguments: 

@@ -1,7 +1,7 @@
 import tkinter as tk
 import os
-from tkinter import Canvas, ttk
 from PIL import ImageTk,Image
+from tkinter import Canvas, ttk
 
 class StatusLight(ttk.Frame):
 
@@ -9,7 +9,6 @@ class StatusLight(ttk.Frame):
         ttk.Frame.__init__(self, parent)
         self.parent = parent
         self.color = 'grey'
-        self.grid
 
         self.canvas = Canvas(self, width = 20, height = 20)
         self.canvas.grid(row = 0, column = 0)
@@ -29,3 +28,7 @@ class StatusLight(ttk.Frame):
             self.canvas.create_image(20, 20, anchor='center', image=self.green)
         elif(status=="critical"):
             self.canvas.create_image(20, 20, anchor='center', image=self.red)
+    
+    def destroy(self) -> None:
+        return super().destroy()
+    
