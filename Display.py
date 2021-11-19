@@ -1,4 +1,4 @@
-from Comms import Comms
+from comms import Comms
 import json
 import sys
 import threading
