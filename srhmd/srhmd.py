@@ -44,7 +44,11 @@ class Srhmd:
 
     @staticmethod
     def get_ip():
-        """Grab host ip"""
+        """
+        Grab host ip
+        :return:
+            String
+        """
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         try:
             s.connect(('10.255.255.255', 1))

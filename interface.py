@@ -17,13 +17,13 @@ class Gui():
 	def __init__(self):
 		"""
 		Attributes:
-			- root: tkinter root instance
+			root: tkinter root instance
 				the root for the gui elements
-			- lom: dict<String:String>
+			lom: dict<String:String>
 				holds data from configuration file
-			- loaded_file: Dict<String:String>
+			loaded_file: Dict<String:String>
 				loaded data directly from config json
-			- started: Boolean
+			started: Boolean
 				indicates whether GUI has started or not
 		"""
 		self.root = self.intialization()
@@ -42,9 +42,9 @@ class Gui():
 		"""
 		return collapsiblepane object representing a machine
 		Arguments: 
-			- name: String
+			name: String
 				name of the machine
-			- data: dict<String:String>
+			data: dict<String:String>
 				The data the infodisplay object should contain
 		"""
 		cpane = gui.cp(self.root, name, name)
@@ -109,7 +109,12 @@ class Gui():
 			self.relode()
 
 	def add_value(self, ip):
-		"""prompts user to add a value to a machine at ip"""
+		"""
+        prompts user to add a value to a machine at ip
+        Arguments: 
+            ip: String
+                The ip of the machine to add a value too
+        """
 		name = simpledialog.askstring(title="Name", prompt="Enter the name of the data stream:")
 		unit = simpledialog.askstring(title="Units", prompt="Enter units it is measured in:")
 		if name != None and unit != None:
@@ -119,7 +124,12 @@ class Gui():
 			self.relode()
 
 	def rmv_value(self, ip):
-		"""prompts user to remove a value on machine at ip"""
+		"""
+        prompts user to remove a value on machine at ip
+        Arguments: 
+            ip: String
+                The ip of the machine to remove a value from
+        """
 		name = simpledialog.askstring(title="Name", prompt="Enter the name of the data stream to remove:")
 		if name != None:
 			for item in self.data['mlist']:
@@ -161,7 +171,7 @@ class Gui():
 		"""
 		Update the gui with updates
 		Arguments: 
-			- updates: dict<String:String>
+			updates: dict<String:String>
 				dictionary of updates for the GUI
 		"""
 		ip = list(updates.keys())[0]
@@ -187,9 +197,9 @@ class Gui():
 		"""
 		change the name of a machine
 		Arguments: 
-			- ip: String
+			ip: String
 				The ip of the machine
-			- newname: String
+			newname: String
 				The name to change the machine to
 		"""
 		self.lom[ip]["name"] = newname
@@ -210,10 +220,7 @@ class Gui():
 		filemenu.add_command(label="Save", command=lambda: self.save_file())
 		filemenu.add_command(label="Add Robot", command=lambda: self.add_robot())
 		filemenu.add_command(label="Remove Robot", command=lambda: self.rmv_robot())
-		#filemenu.add_command(label="Update", command=lambda: self.update_display({"71.25.180.79": {"mem": 1, "temp": 100}, "108.147.247.58": {"mem": 5, "temp": 500}}))
 		menubar.add_cascade(label="File", menu=filemenu)
 		filemenu.add_separator()
-		#filemenu.add_command(label="Exit", command=lambda: self.gui_exit())
 		root.config(menu=menubar)
 		return root
-
