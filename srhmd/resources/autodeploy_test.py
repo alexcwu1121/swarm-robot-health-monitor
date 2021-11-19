@@ -1,9 +1,29 @@
+"""
+autodeploy_test.py
+Script that pushes srhmd to all robots specified in a config file
+"""
+
 import os
 import json
 import paramiko
 import time
 
 def deploy(key, machine, username, password):
+    """
+    deploy
+    Arguments:
+        key: String
+            ssh public key
+        machine: String
+            ip address of robot
+        username: String
+            username of robot host, default just "pi" for raspberry pis
+        password: String
+            password of robot host, default just "raspberry" for raspberry pis
+    Returns:
+        None
+    """
+
     client = paramiko.SSHClient()
     client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     client.connect(machine['ip'], username=username, password=password)
