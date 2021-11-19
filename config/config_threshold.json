@@ -1,0 +1,21 @@
+{
+	"Threshold":{
+    "publish":{
+      "ip": "127.0.0.1",
+      "port": "2900"
+    },
+
+    "bounds": {
+      "global":{
+        "svmem_percentage": {
+          "min": "20",
+          "max": "30"
+        },
+        "ext_sensors": {
+          "min": "100",
+          "max": "110"
+        }
+      }
+    }
+  }
+}

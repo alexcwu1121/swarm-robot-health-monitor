@@ -5,6 +5,7 @@ Description:This file will mainly be responsive for calling out GUI for now.
 """
 
 from Display import Display
+from ThresholdAnalytic import ThresholdAnalytic
 import multiprocessing as mp
 import sys
 import os
@@ -17,6 +18,9 @@ def worker(type, service_config):
     if type == 'Display':
         display = Display(service_config)
         display.run()
+    elif type == 'ThresholdAnalytic':
+        threshold = ThresholdAnalytic(service_config)
+        threshold.run()
     else:
         print("No such service")
 
@@ -28,6 +32,11 @@ def main():
         p = mp.Process(target=worker, args=('Display', None))
         procs.append(p)
         p.start()
+
+        p = mp.Process(target=worker, args=('ThresholdAnalytic', None))
+        procs.append(p)
+        p.start()
+
     except KeyboardInterrupt:
         print('Interrupted')
         for proc in procs:
