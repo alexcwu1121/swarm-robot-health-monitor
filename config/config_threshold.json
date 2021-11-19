@@ -9,11 +9,11 @@
       "global":{
         "svmem_percentage": {
           "min": "20",
-          "max": "30"
+          "max": "40"
         },
         "ext_sensors": {
-          "min": "100",
-          "max": "110"
+          "min": "0",
+          "max": "10000000"
         }
       }
     }
