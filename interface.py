@@ -17,14 +17,18 @@ class Gui():
 	def __init__(self):
 		"""
 		Attributes:
-			root: tkinter root instance
+			- root: tkinter root instance
 				the root for the gui elements
-			lom: dict<String:String>
+			- lom: dict<String:String>
 				holds data from configuration file
-			loaded_file: Dict<String:String>
+			- loaded_file: Dict<String:String>
 				loaded data directly from config json
-			started: Boolean
+			- started: Boolean
 				indicates whether GUI has started or not
+            - data: dict<String:String>
+                The data that is being used
+            - reloded_required: Boolean
+                Indicated if a relode is needed
 		"""
 		self.root = self.intialization()
 		self.lom = {}
@@ -44,8 +48,10 @@ class Gui():
 		Arguments: 
 			name: String
 				name of the machine
-			data: dict<String:String>
+			data: Dict<String:String>
 				The data the infodisplay object should contain
+            graph: Dict<String:String>
+                The parameters for graphs
 		"""
 		cpane = gui.cp(self.root, name, name)
 		cpane.grid(row = 0, column = 0, sticky = 'w')
