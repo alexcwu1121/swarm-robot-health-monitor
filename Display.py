@@ -6,7 +6,7 @@ manages the server's connections to all the robots in the swarm
     - maintains an internal dictonary that is updated whenever a new message is sent to the server from a robot
 """
 
-from Comms import Comms
+from comms import Comms
 import json
 import sys
 import threading
