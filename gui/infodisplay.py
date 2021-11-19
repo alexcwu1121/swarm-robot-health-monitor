@@ -8,7 +8,6 @@ of datas and returns a dictionary of labels with the data
 import tkinter as tk
 from tkinter import ttk
 import tkinter.font as font
-from typing import Text
 import gui
 
 class InfoDisplay(ttk.Frame):

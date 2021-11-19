@@ -5,7 +5,6 @@ Main file for our Graphical User Interface.
 
 import gui
 import json
-import copy
 from tkinter import * 
 from tkinter import filedialog
 from tkinter import messagebox
