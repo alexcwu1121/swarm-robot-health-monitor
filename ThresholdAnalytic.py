@@ -17,7 +17,7 @@ class ThresholdAnalytic(Service):
         with open("config/config_threshold.json") as f:
             self.analytic_config = json.load(f)
 
-        self.bounds = {};
+        self.bounds = {}
         self.bounds['global'] = self.analytic_config['Threshold']['bounds']['global']
 
         # Connect to robots
@@ -51,7 +51,9 @@ class ThresholdAnalytic(Service):
         threshold = {}
         for sensor in state.keys():
             # If the data isn't a string, assume threshold satisfied
-            if not str(state[sensor][0]).isdecimal():
+            try:
+                float(state[sensor][0])
+            except ValueError:
                 threshold[sensor] = True
                 continue
 
@@ -75,9 +77,6 @@ class ThresholdAnalytic(Service):
             for ip in self.state.keys():
                 threshold = self.within_threshold(self.bounds['global'], self.state[ip])
                 self.comms.send("Threshold", Message(ip, threshold))
-                print(threshold)
-
-        return
 
 
 if __name__ == "__main__":

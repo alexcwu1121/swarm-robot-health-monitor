@@ -6,10 +6,10 @@ Description:This file will mainly be responsive for calling out GUI for now.
 
 from Display import Display
 from ThresholdAnalytic import ThresholdAnalytic
+from StatusAnalytic import StatusAnalytic
 import multiprocessing as mp
 import sys
 import os
-import json
 
 #sets up and runs a service
 #type: the type of service that worker is running
@@ -21,6 +21,9 @@ def worker(type, service_config):
     elif type == 'ThresholdAnalytic':
         threshold = ThresholdAnalytic(service_config)
         threshold.run()
+    elif type == 'StatusAnalytic':
+        status = StatusAnalytic(service_config)
+        status.run()
     else:
         print("No such service")
 
@@ -34,6 +37,10 @@ def main():
         p.start()
 
         p = mp.Process(target=worker, args=('ThresholdAnalytic', None))
+        procs.append(p)
+        p.start()
+
+        p = mp.Process(target=worker, args=('StatusAnalytic', None))
         procs.append(p)
         p.start()
 
