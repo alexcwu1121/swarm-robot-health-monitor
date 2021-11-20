@@ -1,5 +1,5 @@
 """
-gui.py
+Interface.py
 Main file for our Graphical User Interface.
 """
 
