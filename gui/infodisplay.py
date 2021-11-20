@@ -121,8 +121,7 @@ class InfoDisplay(ttk.Frame):
             v: String
                 the value to update to
         """
-        #self.info[k].config(text=str(v))
         self._data[k].config(text=k+': '+str(v))
         if v.split()[-1] != '0':
-            self._plots[k].update(float(v.split()[-1][1:-2]))
+            self._plots[k].update(float(v))
 
