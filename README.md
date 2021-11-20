@@ -4,7 +4,9 @@ SRHM does this by running a demon(called srhmd) on every robot in the swarm that
 health, resource use and sensor data of the robot it is running on and then sends that information to a computer running
 an application that process the data and then displays it on a GUI that is updated in real time.  This allows the user to
 simply watch the GUI to see the current status of their swarm.  The application is entirely implemeneted in Python 3.
-
+The application also has an autodepolyment feature which is a python script that when run will send srhmd to each of the
+robots and start it.  This autodepolyment uses a config file called config_testing.json that is in the same folder as it
+to know what robots to try to connect to.
 
 Networking information:
 
@@ -48,4 +50,10 @@ In addition to the GUI the server side also relies on Display.py which contains 
 creates subscribers for each of the robots and saves the information it gets from them before using that new data to update
 the GUI.  The final part of the server side is driver.py which is used to start Display and any other services that the
 application is using.
+
+Running application:
+run Python driver.py in the console to start the application
+
+Autodeploy:
+to run Autodeploy run Python autodepoly_test.py which is in the resources sub folder of the srhmd folder
 

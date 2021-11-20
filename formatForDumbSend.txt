@@ -1,0 +1,6 @@
+python dumbSend.py <filename for prechoosen inputs or inputing nothing lets you send messages you write>
+
+format for lines in the prechoosen input file
+<topic>,<key1>,<value1>,<key2>,<value2>,<key3>,<value3>.. etc.(you can have as many lines and values as you want)
+
+dumbRec prints everything sent to the "testInput" topic on socket number 3001
