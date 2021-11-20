@@ -2,7 +2,7 @@ import sys
 import json
 import time
 from Service import Service
-from Comms import Message
+from comms import Message
 
 class StatusAnalytic(Service):
 
@@ -28,7 +28,7 @@ class StatusAnalytic(Service):
         pass
 
     def transform(self):
-        msg_recv = self.comms.get('Threshold')
+        msg_recv = self.comms.get_clear('Threshold')
         if msg_recv is not None:
 
             if msg_recv.topic not in self.state.keys():
@@ -43,8 +43,6 @@ class StatusAnalytic(Service):
 
         values = list(state.values())
         failures = len(values) - sum(values)
-        print(state)
-        print(failures)
 
         if failures <= int(self.status_conditions["nominal"]):
             status["Status"] = "nominal"
