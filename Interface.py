@@ -32,7 +32,7 @@ class Interface():
 		self.root = self.intialization()
 		self.lom = {}
 		self.loaded_file = ""
-		self.data = {}
+		self.data = {'mlist': [], 'alist': []}
 		self.reloadd_required = False
 		self.started = False
 		self.root.update()
