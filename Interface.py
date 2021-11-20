@@ -24,6 +24,10 @@ class Interface():
 				loaded data directly from config json
 			- started: Boolean
 				indicates whether GUI has started or not
+            - data: dict<String:String>
+                The data that is being used
+            - reloded_required: Boolean
+                Indicated if a relode is needed
 		"""
 		self.root = self.intialization()
 		self.lom = {}
@@ -41,10 +45,12 @@ class Interface():
 		"""
 		return collapsiblepane object representing a machine
 		Arguments: 
-			- name: String
+			name: String
 				name of the machine
-			- data: dict<String:String>
+			data: Dict<String:String>
 				The data the infodisplay object should contain
+            graph: Dict<String:String>
+                The parameters for graphs
 		"""
 		cpane = gui.cp(self.root, name, name)
 		cpane.grid(row = 0, column = 0, sticky = 'w')
@@ -108,7 +114,12 @@ class Interface():
 			self.reload()
 
 	def add_value(self, ip):
-		"""prompts user to add a value to a machine at ip"""
+		"""
+        Prompts user to add a value to a machine at ip
+        Arguments: 
+            ip: String
+                The ip of the machine to add a value too
+        """
 		name = simpledialog.askstring(title="Name", prompt="Enter the name of the data stream:")
 		unit = simpledialog.askstring(title="Units", prompt="Enter units it is measured in:")
 		if name != None and unit != None:
@@ -118,7 +129,12 @@ class Interface():
 			self.reload()
 
 	def rmv_value(self, ip):
-		"""prompts user to remove a value on machine at ip"""
+		"""
+        Prompts user to remove a value on machine at ip
+        Arguments: 
+            ip: String
+                The ip of the machine to remove a value from
+        """
 		name = simpledialog.askstring(title="Name", prompt="Enter the name of the data stream to remove:")
 		if name != None:
 			for item in self.data['mlist']:
@@ -213,9 +229,7 @@ class Interface():
 		filemenu.add_command(label="Save", command=lambda: self.save_file())
 		filemenu.add_command(label="Add Robot", command=lambda: self.add_robot())
 		filemenu.add_command(label="Remove Robot", command=lambda: self.rmv_robot())
-		#filemenu.add_command(label="Update", command=lambda: self.update_display({"71.25.180.79": {"mem": 1, "temp": 100}, "108.147.247.58": {"mem": 5, "temp": 500}}))
 		menubar.add_cascade(label="File", menu=filemenu)
 		filemenu.add_separator()
-		#filemenu.add_command(label="Exit", command=lambda: self.gui_exit())
 		root.config(menu=menubar)
 		return root
