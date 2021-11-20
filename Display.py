@@ -68,7 +68,7 @@ class Display(Service):
         # Display applies no transformations and publishes nothing
         # Check for new messages over every analytic manually
         if "Status" in self.active_analytics:
-            msg_status = self.comms.get("Status")
+            msg_status = self.comms.get_clear("Status")
             if msg_status is not None:
                 self.state[msg_status.topic]["Status"] = msg_status.payload["Status"]
 
@@ -84,11 +84,6 @@ class Display(Service):
     #Updates to GUI are sent even if no messages have been recieved since the last update
     def run(self):
         while True:
-
-            # Refresh Display if GUI has reloadd
-            if self.g.get_reload() == True:
-                self.reload()
-                self.g.inform_reload()
 
             # update state and transform data
             try:
@@ -112,6 +107,11 @@ class Display(Service):
             self.g.refresh_gui()
             for bot in bot_list:
                 self.g.update_display(bot)
+
+             # Refresh Display if GUI has reloadd
+            if self.g.get_reload() == True:
+                self.reload()
+                self.g.inform_reload()
 
 
 

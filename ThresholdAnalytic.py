@@ -2,7 +2,7 @@ import sys
 import json
 import time
 from Service import Service
-from Comms import Message
+from comms import Message
 
 class ThresholdAnalytic(Service):
 
@@ -38,7 +38,7 @@ class ThresholdAnalytic(Service):
     def transform(self):
         for ip in self.state.keys():
             # Check status data
-            msg_recv = self.comms.get(ip)
+            msg_recv = self.comms.get_clear(ip)
             if msg_recv is not None:
                 for key in msg_recv.payload.keys():
                     self.state[ip][key] = msg_recv.payload[key]
@@ -56,7 +56,7 @@ class ThresholdAnalytic(Service):
                 continue
 
             if sensor in bounds.keys():
-                if float(bounds[sensor]['min']) < float(state[sensor]) < float(bounds[sensor]['max']):
+                if float(bounds[sensor]['min']) <= float(state[sensor]) <= float(bounds[sensor]['max']):
                     threshold[sensor] = True
                 else:
                     threshold[sensor] = False

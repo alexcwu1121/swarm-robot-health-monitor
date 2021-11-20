@@ -48,7 +48,7 @@ class Comms:
         socket.setsockopt_string(zmq.SUBSCRIBE, "")
         socket.connect("tcp://{}:{}".format(ip, port))
         self.subscriber_ports[topic] = socket
-        self.subscriber_queues[topic] = Queue()
+        self.subscriber_queues[topic] = Queue(maxsize=5)
         t = threading.Thread(target=self.__receive, args=(topic,))
         t.start()
 
