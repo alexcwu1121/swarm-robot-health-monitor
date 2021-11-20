@@ -5,13 +5,21 @@ from matplotlib import pyplot as plt
 import numpy as np
 import random
 
-#creates a plot that can be displayed withing the GUI
-#The root param is the root 
-#The seconds param is for how long in the past it should track, this is the range of the x axis
-#Min and max determin range of y axis
 class AnimatedPlot():
     def __init__(self, parent, seconds, min, max): 
-        """creates a matplot with given parameters"""
+        """creates a matplot with given parameters
+        Attributes:
+            - fig: Figure 
+                The matplot figure to show
+            - line: Plot
+                The data to graph
+            - canvas: Canvas
+                The canvas to display
+            - seconds: Int
+                The number number of entries to keep track of
+            - data: [Int]
+                The values to graph
+        """
         plt.rcParams["figure.figsize"] = [3.00, 1.50]
         plt.rcParams["figure.autolayout"] = True
 
@@ -27,7 +35,12 @@ class AnimatedPlot():
         self.data = [0] * seconds
 
     def update(self, value):
-        """updates plot with new value"""
+        """
+        updates plot with new value
+        Arguments:
+            value: Int
+                The value to add to the graph
+        """
         self.data.pop(0)
         self.data.append(value)
 

@@ -14,6 +14,31 @@ class InfoDisplay(ttk.Frame):
     def __init__(self, parent, info, graph, gui):
         """
         Initilize Infodisplay from info and graph
+        Attributes:
+            - parent: frame 
+                Frame of GUI this is contained in
+            - graph: Dict<String:String>
+                Information on what graphs should be added
+            - info: Dict<String:String>
+                The information for what to display
+            - gui: Interface
+                The interface that this is being put in
+            - _r: Int
+                The number of rows that the frame is using
+            - _ip: String
+                the ip for the represented machine
+            - frame: frame
+                The frame that the add/rmv buttons are contained in
+            - _data: Dict<String:String>
+                The data that is to be displayed
+            - _plots: Dict<String:String>
+                The matplots that are displayed
+            - _seperators: [Seperator]
+                The seperators imployed in the display
+            - addbtn: Button
+                The button for adding elements to the data
+            - rmvbtn: Button
+                The button for removing elements from the data
         """
         ttk.Frame.__init__(self, parent)				
         self.parent = parent
@@ -23,7 +48,6 @@ class InfoDisplay(ttk.Frame):
         self._r = 0
         myFont = font.Font(weight="bold")
 
-        #ip address as string
         self._ip = ttk.Label(self, 
                                 text=('ip: ' + self.info['ip']), 
                                 justify=tk.LEFT,
@@ -35,10 +59,8 @@ class InfoDisplay(ttk.Frame):
                         sticky='w')
         self._r = self._r + 1
 
-        #dictionary of core datas to be displayed
         self._data, self._plots, self._seperators = self._create_text_list(info['data'])
 
-        #add and remove buttons
         self.frame = ttk.Frame(self)
         self.addbtn = ttk.Checkbutton(self.frame, text="+", width='2', style ="TButton", command=lambda: self.gui.add_value(self.info['ip']))
         self.addbtn.grid(row = 0, rowspan='1', column = 0, sticky='w')
@@ -50,6 +72,9 @@ class InfoDisplay(ttk.Frame):
     def _create_text_list(self, info):
         """
         Create the labels and graphs for the info
+        Arguments:
+            info: Dict<String:String>
+                The information to display
         """
         data = {}
         plots = {}
@@ -84,9 +109,7 @@ class InfoDisplay(ttk.Frame):
         return data, plots, separators
 
     def get_data(self):
-        """
-        return the data stored in this object
-        """
+        """Return the data stored in this object"""
         return self._data
 
     def set_data(self, k, v):
