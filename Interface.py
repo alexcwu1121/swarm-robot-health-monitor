@@ -171,20 +171,37 @@ class Interface():
 			ip: String
 				The ip of the machine to remove a value from
 		"""
-		name = simpledialog.askstring(title="Name", prompt="Enter the name of the data stream to remove:")
-		if name != None:
-			for item in self.data['mlist']:
-				if item['ip'] == ip:
-					if name in item['data'].keys():
-						del item['data'][name]
-			self.reload()
+		machine = None
+		for item in self.data['mlist']:
+			if item['ip'] == ip:
+				machine = item
+
+		result = self.ask_multiple_choice_question(
+		"Remove a Value or Graph?",
+		[
+			"Graph",
+			"Value",
+		])
+
+		if result == "Graph":
+			name = 	self.ask_multiple_choice_question("For which value?", list(machine['graph'].keys()))
+			self.rmv_graph(ip, name)
+		else:
+			name = 	self.ask_multiple_choice_question("Remove which Value?", list(machine['data'].keys()))
+			if name != None:
+				for item in self.data['mlist']:
+					if item['ip'] == ip:
+						if name in item['data'].keys():
+							del item['data'][name]
+							self.rmv_graph(ip, name)
+				self.reload()
 
 	def add_graph(self, ip, value):
 		"""
 		Adds a graph to a value
 		Arguments: 
 			ip: String
-				The ip of the machine to remove a value from
+				The ip of the machine to add the graph to
 			value: String
 				The value to add a graph to
 		"""
@@ -198,6 +215,23 @@ class Interface():
 						item['graph'] = {}
 					item['graph'][value] = {'length': entries, 'min': minimum, 'max': maximum}
 			self.reload()
+
+	def rmv_graph(self, ip, value):
+		"""
+		Adds a graph to a value
+		Arguments: 
+			ip: String
+				The ip of the machine to remove a value from
+			value: String
+				The of graph to remove
+		"""
+		for item in self.data['mlist']:
+			if item['ip'] == ip:
+				if not 'graph' in item.keys():
+					item['graph'] = {}
+				if value in item['graph'].keys():
+					del item['graph'][value]
+		self.reload()
 
 
 	def reload(self):
