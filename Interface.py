@@ -128,12 +128,12 @@ class Interface():
 		confirm = 0
 		if prompt:
 			Label(root, text=prompt).pack()
-		v = IntVar()
-		for i, option in enumerate(options):
-			Radiobutton(root, text=option, variable=v, value=i).pack(anchor="w")
+		v = StringVar(root, options[0])
+		for option in options:
+			Radiobutton(root, text=option, variable=v, value=option).pack(anchor="w")
 		ttk.Checkbutton(root, text="Submit", style ="TButton", command=lambda:[root.quit(), root.destroy()]).pack()
 		root.mainloop()
-		return options[v.get()]
+		return v.get()
 
 	def add_value(self, ip):
 		"""
@@ -154,10 +154,11 @@ class Interface():
 			"Value",
 		])
 
-		name = 	self.ask_multiple_choice_question("For which value?", list(machine['data'].keys()))
 		if result == "Graph":
+			name = 	self.ask_multiple_choice_question("For which value?", list(machine['data'].keys()))
 			self.add_graph(ip, name)
 		else:
+			name = simpledialog.askstring(title="Name", prompt="Enter the name of the data stream:")
 			unit = simpledialog.askstring(title="Units", prompt="Enter units it is measured in:")
 			if name != None and unit != None:
 				machine['data'][name] = unit
