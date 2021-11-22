@@ -43,7 +43,7 @@ class StatusAnalytic(Service):
 
         # if timeout specifically fails, then immediate critical
         if not state['Timeout']:
-            status["Status"] = "critical"
+            status["Status"] = "offline"
             return status
 
         values = list(state.values())
