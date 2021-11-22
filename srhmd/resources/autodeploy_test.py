@@ -91,6 +91,6 @@ if __name__  == "__main__":
     for machine in list_of_machines:
         try:
             deploy(key, machine, username, password)
-        except TimeoutError:
+        except:
             print("Host unresponsive. Moving on.")
 

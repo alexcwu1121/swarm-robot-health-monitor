@@ -10,7 +10,7 @@ from tkinter import filedialog
 from tkinter import messagebox
 from tkinter import simpledialog
 from ttkthemes import ThemedTk
-
+from tkinter import ttk
 
 class Interface():
 	def __init__(self):
