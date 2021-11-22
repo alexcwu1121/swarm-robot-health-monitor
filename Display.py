@@ -93,13 +93,13 @@ class Display(Service):
         # Display applies no transformations and publishes nothing
         # Check for new messages over every analytic manually
         if "Status" in self.active_analytics:
-            msg_status = self.comms.get_clear("Status")
+            msg_status = self.comms.get("Status")
             if msg_status is not None:
                 self.state[msg_status.topic]["Status"] = msg_status.payload["Status"]
 
         for ip in self.state.keys():
             # Check status data
-            msg_recv = self.comms.get_clear(ip)
+            msg_recv = self.comms.get(ip)
             if msg_recv is not None:
                 for key in msg_recv.payload.keys():
                     self.state[ip][key] = msg_recv.payload[key]
@@ -117,8 +117,6 @@ class Display(Service):
                 self.transform()
             except KeyError:
                 pass
-
-            #print(self.state)
 
             # Prepare states for GUI
             bot_list = list()

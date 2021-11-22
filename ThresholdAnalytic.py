@@ -38,7 +38,7 @@ class ThresholdAnalytic(Service):
     def transform(self):
         for ip in self.state.keys():
             # Check status data
-            msg_recv = self.comms.get_clear(ip)
+            msg_recv = self.comms.get(ip)
             if msg_recv is not None:
                 for key in msg_recv.payload.keys():
                     self.state[ip][key] = msg_recv.payload[key]

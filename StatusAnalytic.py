@@ -28,7 +28,7 @@ class StatusAnalytic(Service):
         pass
 
     def transform(self):
-        msg_recv = self.comms.get_clear('Threshold')
+        msg_recv = self.comms.get('Threshold')
         if msg_recv is not None:
 
             if msg_recv.topic not in self.state.keys():
