@@ -135,7 +135,7 @@ class Interface():
 		root.mainloop()
 		return v.get()
 
-	def add_value(self, ip):
+	def add_element(self, ip):
 		"""
 		Prompts user to add a value to a machine at ip
 		Arguments: 
@@ -155,7 +155,7 @@ class Interface():
 		])
 
 		if result == "Graph":
-			name = 	self.ask_multiple_choice_question("For which value?", list(machine['data'].keys()))
+			name = self.ask_multiple_choice_question("For which value?", list(machine['data'].keys()))
 			self.add_graph(ip, name)
 		else:
 			name = simpledialog.askstring(title="Name", prompt="Enter the name of the data stream:")
@@ -164,7 +164,7 @@ class Interface():
 				machine['data'][name] = unit
 				self.reload()
 
-	def rmv_value(self, ip):
+	def rmv_element(self, ip):
 		"""
 		Prompts user to remove a value on machine at ip
 		Arguments: 
@@ -184,10 +184,14 @@ class Interface():
 		])
 
 		if result == "Graph":
-			name = 	self.ask_multiple_choice_question("For which value?", list(machine['graph'].keys()))
+			if len(machine['graph'].keys()) == 0:
+				return	
+			name = self.ask_multiple_choice_question("For which value?", list(machine['graph'].keys()))
 			self.rmv_graph(ip, name)
 		else:
-			name = 	self.ask_multiple_choice_question("Remove which Value?", list(machine['data'].keys()))
+			if len(machine['data'].keys()) == 0:
+				return	
+			name = self.ask_multiple_choice_question("Remove which Value?", list(machine['data'].keys()))
 			if name != None:
 				for item in self.data['mlist']:
 					if item['ip'] == ip:

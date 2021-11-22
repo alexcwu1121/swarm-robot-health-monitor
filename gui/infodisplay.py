@@ -62,9 +62,9 @@ class InfoDisplay(ttk.Frame):
         self._data, self._plots, self._seperators = self._create_text_list(info['data'])
 
         self.frame = ttk.Frame(self)
-        self.addbtn = ttk.Checkbutton(self.frame, text="+", width='2', style ="TButton", command=lambda: self.gui.add_value(self.info['ip']))
+        self.addbtn = ttk.Checkbutton(self.frame, text="+", width='2', style ="TButton", command=lambda: self.gui.add_element(self.info['ip']))
         self.addbtn.grid(row = 0, rowspan='1', column = 0, sticky='w')
-        self.rmvbtn = ttk.Checkbutton(self.frame, text="-", width='2', style ="TButton", command=lambda: self.gui.rmv_value(self.info['ip']))
+        self.rmvbtn = ttk.Checkbutton(self.frame, text="-", width='2', style ="TButton", command=lambda: self.gui.rmv_element(self.info['ip']))
         self.rmvbtn.grid(row = 0, rowspan='1', column = 1, sticky='w')
         self.frame.grid(row = self._r, rowspan='1', column = 0, sticky='w')
         self._r = self._r + 1
