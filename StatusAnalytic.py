@@ -28,18 +28,23 @@ class StatusAnalytic(Service):
         pass
 
     def transform(self):
-        msg_recv = self.comms.get('Threshold')
-        if msg_recv is not None:
-
-            if msg_recv.topic not in self.state.keys():
-                self.state[msg_recv.topic] = {}
-
-            for key in msg_recv.payload.keys():
-                self.state[msg_recv.topic][key] = msg_recv.payload[key]
+        for topic in self.comms.subscriber_ports.keys():
+            msg_recv = self.comms.get(topic)
+            #print(msg_recv)
+            if msg_recv is not None:
+                if msg_recv.topic not in self.state.keys():
+                    self.state[msg_recv.topic] = {}
+                for key in msg_recv.payload.keys():
+                    self.state[msg_recv.topic][key] = msg_recv.payload[key]
         return
 
     def get_status(self, state):
         status = {}
+
+        # if timeout specifically fails, then immediate critical
+        if not state['Timeout']:
+            status["Status"] = "disconnected"
+            return status
 
         values = list(state.values())
         failures = len(values) - sum(values)
@@ -56,10 +61,12 @@ class StatusAnalytic(Service):
         while True:
             # update state and transform data
             self.transform()
-
             for ip in self.state.keys():
-                status = self.get_status(self.state[ip])
-                self.comms.send("Status", Message(ip, status))
+                try:
+                    status = self.get_status(self.state[ip])
+                    self.comms.send("Status", Message(ip, status))
+                except KeyError:
+                    pass
 
 
 if __name__ == "__main__":

@@ -5,8 +5,9 @@ Description:This file will mainly be responsive for calling out GUI for now.
 """
 
 from Display import Display
-from ThresholdAnalytic import ThresholdAnalytic
 from StatusAnalytic import StatusAnalytic
+from ThresholdAnalytic import ThresholdAnalytic
+from TimeoutAnalytic import TimeoutAnalytic
 import multiprocessing as mp
 import sys
 import os
@@ -24,6 +25,9 @@ def worker(type, service_config):
     elif type == 'StatusAnalytic':
         status = StatusAnalytic(service_config)
         status.run()
+    elif type == 'TimeoutAnalytic':
+        timeout = TimeoutAnalytic(service_config)
+        timeout.run()
     else:
         print("No such service")
 
@@ -41,6 +45,10 @@ def main():
         p.start()
 
         p = mp.Process(target=worker, args=('StatusAnalytic', None))
+        procs.append(p)
+        p.start()
+
+        p = mp.Process(target=worker, args=('TimeoutAnalytic', None))
         procs.append(p)
         p.start()
 

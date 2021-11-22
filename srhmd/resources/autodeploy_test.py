@@ -89,5 +89,8 @@ if __name__  == "__main__":
         data = json.load(f)
     list_of_machines = data["mlist"]
     for machine in list_of_machines:
-        deploy(key, machine, username, password)
+        try:
+            deploy(key, machine, username, password)
+        except TimeoutError:
+            print("Host unresponsive. Moving on.")
 
