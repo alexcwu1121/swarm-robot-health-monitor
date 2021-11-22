@@ -46,7 +46,6 @@ class TimeoutAnalytic(Service):
         while True:
             # update state and transform data
             self.transform()
-
             for ip in self.state.keys():
                 timeout = {"Timeout": True}
                 if self.state[ip]["Timeout"] > self.timeout:
