@@ -24,10 +24,10 @@ class Interface():
 				loaded data directly from config json
 			- started: Boolean
 				indicates whether GUI has started or not
-            - data: dict<String:String>
-                The data that is being used
-            - reloded_required: Boolean
-                Indicated if a relode is needed
+			- data: dict<String:String>
+				The data that is being used
+			- reloded_required: Boolean
+				Indicated if a relode is needed
 		"""
 		self.root = self.intialization()
 		self.lom = {}
@@ -49,8 +49,8 @@ class Interface():
 				name of the machine
 			data: Dict<String:String>
 				The data the infodisplay object should contain
-            graph: Dict<String:String>
-                The parameters for graphs
+			graph: Dict<String:String>
+				The parameters for graphs
 		"""
 		cpane = gui.cp(self.root, name, name)
 		cpane.grid(row = 0, column = 0, sticky = 'w')
@@ -113,35 +113,130 @@ class Interface():
 					self.data['mlist'].remove(item)
 			self.reload()
 
-	def add_value(self, ip):
+	def ask_multiple_choice_question(self, prompt, options):
 		"""
-        Prompts user to add a value to a machine at ip
-        Arguments: 
-            ip: String
-                The ip of the machine to add a value too
-        """
-		name = simpledialog.askstring(title="Name", prompt="Enter the name of the data stream:")
-		unit = simpledialog.askstring(title="Units", prompt="Enter units it is measured in:")
-		if name != None and unit != None:
+		Prompts user to decide on something
+		Arguments: 
+			prompt: String
+				The question being posed
+			prompt: [String]
+				The options
+		"""
+		root = Tk()
+		root.title("Choose Type")
+		root.eval('tk::PlaceWindow . center')
+		confirm = 0
+		if prompt:
+			Label(root, text=prompt).pack()
+		v = StringVar(root, options[0])
+		for option in options:
+			Radiobutton(root, text=option, variable=v, value=option).pack(anchor="w")
+		ttk.Checkbutton(root, text="Submit", style ="TButton", command=lambda:[root.quit(), root.destroy()]).pack()
+		root.mainloop()
+		return v.get()
+
+	def add_element(self, ip):
+		"""
+		Prompts user to add a value to a machine at ip
+		Arguments: 
+			ip: String
+				The ip of the machine to add a value too
+		"""
+		machine = None
+		for item in self.data['mlist']:
+			if item['ip'] == ip:
+				machine = item
+
+		result = self.ask_multiple_choice_question(
+		"Add a Value or Graph?",
+		[
+			"Graph",
+			"Value",
+		])
+
+		if result == "Graph":
+			name = self.ask_multiple_choice_question("For which value?", list(machine['data'].keys()))
+			self.add_graph(ip, name)
+		else:
+			name = simpledialog.askstring(title="Name", prompt="Enter the name of the data stream:")
+			unit = simpledialog.askstring(title="Units", prompt="Enter units it is measured in:")
+			if name != None and unit != None:
+				machine['data'][name] = unit
+				self.reload()
+
+	def rmv_element(self, ip):
+		"""
+		Prompts user to remove a value on machine at ip
+		Arguments: 
+			ip: String
+				The ip of the machine to remove a value from
+		"""
+		machine = None
+		for item in self.data['mlist']:
+			if item['ip'] == ip:
+				machine = item
+
+		result = self.ask_multiple_choice_question(
+		"Remove a Value or Graph?",
+		[
+			"Graph",
+			"Value",
+		])
+
+		if result == "Graph":
+			if len(machine['graph'].keys()) == 0:
+				return	
+			name = self.ask_multiple_choice_question("For which value?", list(machine['graph'].keys()))
+			self.rmv_graph(ip, name)
+		else:
+			if len(machine['data'].keys()) == 0:
+				return	
+			name = self.ask_multiple_choice_question("Remove which Value?", list(machine['data'].keys()))
+			if name != None:
+				for item in self.data['mlist']:
+					if item['ip'] == ip:
+						if name in item['data'].keys():
+							del item['data'][name]
+							self.rmv_graph(ip, name)
+				self.reload()
+
+	def add_graph(self, ip, value):
+		"""
+		Adds a graph to a value
+		Arguments: 
+			ip: String
+				The ip of the machine to add the graph to
+			value: String
+				The value to add a graph to
+		"""
+		minimum = simpledialog.askstring(title="Minimum", prompt="Enter the minimum of the graph:")
+		maximum = simpledialog.askstring(title="Maximum", prompt="Enter the maximum of the graph:")
+		entries = simpledialog.askstring(title="Entries", prompt="Enter the number of entries to track:")
+		if minimum != None and maximum != None and entries != None:
 			for item in self.data['mlist']:
 				if item['ip'] == ip:
-					item['data'][name] = unit
+					if not 'graph' in item.keys():
+						item['graph'] = {}
+					item['graph'][value] = {'length': entries, 'min': minimum, 'max': maximum}
 			self.reload()
 
-	def rmv_value(self, ip):
+	def rmv_graph(self, ip, value):
 		"""
-        Prompts user to remove a value on machine at ip
-        Arguments: 
-            ip: String
-                The ip of the machine to remove a value from
-        """
-		name = simpledialog.askstring(title="Name", prompt="Enter the name of the data stream to remove:")
-		if name != None:
-			for item in self.data['mlist']:
-				if item['ip'] == ip:
-					if name in item['data'].keys():
-						del item['data'][name]
-			self.reload()
+		Adds a graph to a value
+		Arguments: 
+			ip: String
+				The ip of the machine to remove a value from
+			value: String
+				The of graph to remove
+		"""
+		for item in self.data['mlist']:
+			if item['ip'] == ip:
+				if not 'graph' in item.keys():
+					item['graph'] = {}
+				if value in item['graph'].keys():
+					del item['graph'][value]
+		self.reload()
+
 
 	def reload(self):
 		"""reloads based off of current self.dict"""
