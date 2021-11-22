@@ -1,3 +1,0 @@
-testInput,1,hello,2,world
-testInput,2,world
-testInput,3,I like ice cream
