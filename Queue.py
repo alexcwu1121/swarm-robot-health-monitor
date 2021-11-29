@@ -1,7 +1,7 @@
 class Queue():
 
-    def __init__(self, len):
-        self._maxlen=len
+    def __init__(self, maxsize):
+        self._maxlen=maxsize
         self._curlen=0
         self._head=0
         self._tail=-1
