@@ -5,6 +5,14 @@
       "port": "2900"
     },
 
+    "subscribe": [
+      {
+        "ip": "127.0.0.1",
+        "port": "4000",
+        "topic": "Ingress"
+      }
+    ],
+
     "bounds": {
       "global":{
         "svmem_percentage": {

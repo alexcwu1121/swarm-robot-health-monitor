@@ -8,6 +8,7 @@ from Display import Display
 from StatusAnalytic import StatusAnalytic
 from ThresholdAnalytic import ThresholdAnalytic
 from TimeoutAnalytic import TimeoutAnalytic
+from Ingress import Ingress
 import multiprocessing as mp
 import sys
 import os
@@ -28,6 +29,9 @@ def worker(type, service_config):
     elif type == 'TimeoutAnalytic':
         timeout = TimeoutAnalytic(service_config)
         timeout.run()
+    elif type == 'Ingress':
+        ingress = Ingress(service_config)
+        ingress.run()
     else:
         print("No such service")
 
@@ -49,6 +53,10 @@ def main():
         p.start()
 
         p = mp.Process(target=worker, args=('TimeoutAnalytic', None))
+        procs.append(p)
+        p.start()
+
+        p = mp.Process(target=worker, args=('Ingress', None))
         procs.append(p)
         p.start()
 

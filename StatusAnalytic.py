@@ -30,7 +30,6 @@ class StatusAnalytic(Service):
     def transform(self):
         for topic in self.comms.subscriber_ports.keys():
             msg_recv = self.comms.get(topic)
-            #print(msg_recv)
             if msg_recv is not None:
                 if msg_recv.topic not in self.state.keys():
                     self.state[msg_recv.topic] = {}

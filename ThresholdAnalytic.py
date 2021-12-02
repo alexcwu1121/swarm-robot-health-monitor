@@ -18,12 +18,9 @@ class ThresholdAnalytic(Service):
         self.bounds = {}
         self.bounds['global'] = self.analytic_config['Threshold']['bounds']['global']
 
-        # Connect to robots
-        for item in self.config['mlist']:
-            self.comms.add_subscriber_port(item['ip'], item['port'], item['ip'])
-            self.state[item['ip']] = dict()
-            for key in item['data'].keys():
-                self.state[item['ip']][key] = 0
+        # Set up subscribers according to config
+        for item in self.analytic_config['Threshold']['subscribe']:
+            self.comms.add_subscriber_port(item['ip'], item['port'], item['topic'])
 
         # Connect to analytics according to config
         ip = self.analytic_config['Threshold']['publish']['ip']
@@ -36,12 +33,13 @@ class ThresholdAnalytic(Service):
         pass
 
     def transform(self):
-        for ip in self.state.keys():
-            # Check status data
-            msg_recv = self.comms.get(ip)
+        for topic in self.comms.subscriber_ports.keys():
+            msg_recv = self.comms.get(topic)
             if msg_recv is not None:
-                for key in msg_recv.payload.keys():
-                    self.state[ip][key] = msg_recv.payload[key]
+                if msg_recv.topic in self.state.keys():
+                    self.state[msg_recv.topic].update(msg_recv.payload)
+                else:
+                    self.state[msg_recv.topic] = msg_recv.payload
         return
 
     # take a threshold dictionary and a robot's current state and return threshold condition for each sensor

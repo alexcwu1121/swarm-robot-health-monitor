@@ -18,7 +18,6 @@ class Ingress(Service):
         # Connect to robots
         for item in self.config['mlist']:
             self.comms.add_subscriber_port(item['ip'], item['port'], item['ip'])
-            self.state[item['ip']] = dict()
 
         # Set up publisher port for merged robot messages
         ip = self.analytic_config['Ingress']['publish']['ip']
@@ -45,7 +44,6 @@ class Ingress(Service):
 
             # Send a message for each robot state
             for ip in self.state.keys():
-                print(self.state[ip])
                 self.comms.send("Ingress", self.state[ip])
 
 
