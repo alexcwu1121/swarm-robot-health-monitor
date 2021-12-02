@@ -1,7 +1,7 @@
 {
 	"mlist":[
     {
-        "ip": "71.25.180.79",
+        "ip": "127.0.0.1",
         "port": "3000",
         "name": "example_machine_1",
         "update_interval": "0.01",
@@ -13,58 +13,6 @@
           "sonic_1" : "sonic_rangefinder",
           "gyroscope_1" : "gyroscope"
         }
-    },
-    {
-      "ip": "108.147.247.58",
-      "port": "3001",
-      "name": "example_machine_2",
-      "update_interval": "0.01",
-      "agg_interval": "0.01",
-      "data":
-      {
-        "temp": "degree",
-        "mem": "percent"
-      }
-    },
-    {
-      "ip": "152.212.67.228",
-      "port": "3002",
-      "name": "example_machine_3",
-      "update_interval": "0.01",
-      "agg_interval": "0.01",
-      "data":
-      {
-        "temp": "degree",
-        "mem": "percent",
-        "thermometer":"degree"
-      }
-    },
-    {
-      "ip": "177.92.22.190",
-      "port": "3003",
-      "name": "example_machine_4",
-      "update_interval": "0.01",
-      "agg_interval": "0.01",
-      "data":
-      {
-        "temp": "degree",
-        "mem": "percent",
-        "thermometer":"degree",
-        "rangefinder":"meter",
-        "gps":"coordinate"
-      }
-    },
-    {
-      "ip": "88.14.112.114",
-      "port": "3004",
-      "name": "example_machine_5",
-      "update_interval": "0.01",
-      "agg_interval": "0.01",
-      "data":
-      {
-        "temp": "degree",
-        "mem": "percent"
-      }
     }
   ]
 }

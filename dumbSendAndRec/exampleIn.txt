@@ -1,8 +1,0 @@
-port_topic:
-testyWesty,3002,127.0.0.1
-testIn,3003,127.0.0.1
-messages:
-testyWesty,1,hello,2,world
-testyWesty,2,world
-testyWesty,3,I like ice cream
-testIn,lol,lmao

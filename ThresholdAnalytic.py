@@ -40,6 +40,7 @@ class ThresholdAnalytic(Service):
             # Check status data
             msg_recv = self.comms.get(ip)
             if msg_recv is not None:
+                print(msg_recv)
                 for key in msg_recv.payload.keys():
                     self.state[ip][key] = msg_recv.payload[key]
         return
