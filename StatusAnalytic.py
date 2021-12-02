@@ -31,10 +31,10 @@ class StatusAnalytic(Service):
         for topic in self.comms.subscriber_ports.keys():
             msg_recv = self.comms.get(topic)
             if msg_recv is not None:
-                if msg_recv.topic not in self.state.keys():
-                    self.state[msg_recv.topic] = {}
-                for key in msg_recv.payload.keys():
-                    self.state[msg_recv.topic][key] = msg_recv.payload[key]
+                if msg_recv.topic in self.state.keys():
+                    self.state[msg_recv.topic].update(msg_recv.payload)
+                else:
+                    self.state[msg_recv.topic] = msg_recv.payload
         return
 
     def get_status(self, state):
