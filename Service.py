@@ -9,7 +9,7 @@ from comms import Comms
 class Service(ABC):
     @abstractmethod
     def __init__(self):
-        """Initialize options from a configuration file"""
+        """Initialize self and wait for config"""
         pass
 
     @abstractmethod
