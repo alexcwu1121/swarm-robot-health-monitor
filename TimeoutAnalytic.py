@@ -17,12 +17,9 @@ class TimeoutAnalytic(Service):
 
         self.timeout = float(self.analytic_config['Timeout']['timeout'])
 
-        # Connect to robots
-        for item in self.config['mlist']:
-            self.comms.add_subscriber_port(item['ip'], item['port'], item['ip'])
-            self.state[item['ip']] = dict()
-            self.state[item['ip']]["Timeout"] = 0
-            self.state[item['ip']]["PrevTime"] = time.process_time()
+        # Set up subscribers according to config
+        for item in self.analytic_config['Timeout']['subscribe']:
+            self.comms.add_subscriber_port(item['ip'], item['port'], item['topic'])
 
         # Set up publisher according to config
         ip = self.analytic_config['Timeout']['publish']['ip']
@@ -35,11 +32,17 @@ class TimeoutAnalytic(Service):
         pass
 
     def transform(self):
-        for ip in self.state.keys():
-            msg_recv = self.comms.get(ip)
+        """
+        self.state[item['ip']] = dict()
+        self.state[item['ip']]["Timeout"] = 0
+        self.state[item['ip']]["PrevTime"] = time.process_time()
+        """
+        for topic in self.comms.subscriber_ports.keys() - self.state.keys():
+            msg_recv = self.comms.get(topic)
             if msg_recv is not None:
+                if msg_recv.topic not in self.state.keys():
+                    self.state[msg_recv.topic] = dict()
                 self.state[msg_recv.topic]["PrevTime"] = time.process_time()
-            self.state[ip]["Timeout"] = time.process_time() - self.state[ip]["PrevTime"]
         return
 
     def run(self):
@@ -47,8 +50,9 @@ class TimeoutAnalytic(Service):
             # update state and transform data
             self.transform()
             for ip in self.state.keys():
+                time_elapsed = time.process_time() - self.state[ip]["PrevTime"]
                 timeout = {"Timeout": True}
-                if self.state[ip]["Timeout"] > self.timeout:
+                if time_elapsed > self.timeout:
                     timeout["Timeout"] = False
                 self.comms.send("Timeout", Message(ip, timeout))
 
