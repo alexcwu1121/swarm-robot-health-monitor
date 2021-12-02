@@ -30,7 +30,7 @@ class Ingress(Service):
         pass
 
     def transform(self):
-        for ip in self.state.keys():
+        for ip in self.comms.subscriber_ports.keys():
             # Check status data
             msg_recv = self.comms.get(ip)
             if msg_recv is not None:
