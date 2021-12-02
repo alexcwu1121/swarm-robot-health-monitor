@@ -38,6 +38,7 @@ class TimeoutAnalytic(Service):
         for ip in self.state.keys():
             msg_recv = self.comms.get(ip)
             if msg_recv is not None:
+                print(msg_recv)
                 self.state[msg_recv.topic]["PrevTime"] = time.process_time()
             self.state[ip]["Timeout"] = time.process_time() - self.state[ip]["PrevTime"]
         return
