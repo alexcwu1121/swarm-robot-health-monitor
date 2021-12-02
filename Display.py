@@ -33,14 +33,14 @@ class Display(Service):
             - config: dict
                 config information about the swarm
         """
-        
-        self.g = inter.Interface()
+    
+        self.g = inter.Interface()#REFACTOR
 
         # wait for the user to pick a file
-        while (len(self.g.get_config()) == 0):
+        while (len(self.g.get_config()) == 0):#REFACTOR
             self.g.refresh_gui()
 
-        self.config = self.g.get_config()
+        self.config = self.g.get_config()#REFACTOR
 
         # Connect to robots
         for item in self.config['mlist']:
@@ -57,11 +57,12 @@ class Display(Service):
 
         time.sleep(0.5)
 
-    def reload(self):
+    def reload(self, config):
         """
         dumps the subscribers and state and then goes through and re checks the config 
         """
-        self.config = self.g.get_config()
+        self.config = config
+        # self.config = self.g.get_config()#REFACTOR
         del self.comms
         self.comms = Comms()
         self.state.clear()
@@ -129,14 +130,14 @@ class Display(Service):
                 bot_list.append(ret_state)
 
             # Update GUI
-            self.g.refresh_gui()
+            self.g.refresh_gui()#REFACTOR
             for bot in bot_list:
-                self.g.update_display(bot)
+                self.g.update_display(bot)#REFACTOR
 
-             # Refresh Display if GUI has reloadd
-            if self.g.get_reload() == True:
+             # Refresh Display if GUI has reload
+            if self.g.get_reload() == True:#REFACTOR
                 self.reload()
-                self.g.inform_reload()
+                self.g.inform_reload()#REFACTOR
 
 
 

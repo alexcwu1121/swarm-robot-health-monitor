@@ -5,6 +5,7 @@ Description:This file will mainly be responsive for calling out GUI for now.
 """
 
 from Display import Display
+from Interface import Interface
 from StatusAnalytic import StatusAnalytic
 from ThresholdAnalytic import ThresholdAnalytic
 from TimeoutAnalytic import TimeoutAnalytic
@@ -33,22 +34,26 @@ def worker(type, service_config):
 
 #launches all the services need for the application
 def main():
+    g = Interface()
+    while (len(g.get_config()) == 0):
+       g.refresh_gui()
+    config = g.get_config()
     # launch services
     procs = []
     try:
-        p = mp.Process(target=worker, args=('Display', None))
+        p = mp.Process(target=worker, args=['Display', config])
         procs.append(p)
         p.start()
 
-        p = mp.Process(target=worker, args=('ThresholdAnalytic', None))
+        p = mp.Process(target=worker, args=['ThresholdAnalytic', config])
         procs.append(p)
         p.start()
 
-        p = mp.Process(target=worker, args=('StatusAnalytic', None))
+        p = mp.Process(target=worker, args=['StatusAnalytic', config])
         procs.append(p)
         p.start()
 
-        p = mp.Process(target=worker, args=('TimeoutAnalytic', None))
+        p = mp.Process(target=worker, args=['TimeoutAnalytic', config])
         procs.append(p)
         p.start()
 
@@ -60,6 +65,17 @@ def main():
             sys.exit(0)
         except SystemExit:
             os._exit(0)
+    
+    while(True):
+        # Update GUI
+        g.refresh_gui()#REFACTOR
+        for bot in bot_list:
+            self.g.update_display(bot)#REFACTOR
+
+        # Refresh Display if GUI has reload
+        if self.g.get_reload() == True:#REFACTOR
+            self.reload()
+            self.g.inform_reload()#REFACTOR
 
 if __name__ == "__main__":
     main()
