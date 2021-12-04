@@ -84,8 +84,10 @@ if __name__  == "__main__":
     username = "pi"
     password = "raspberry"
 
+    conf = input("Enter swarm configuration file to deploy:")
+
     # Deploy for each host specified in master config
-    with open('config_testing.json') as f:
+    with open(conf) as f:
         data = json.load(f)
     list_of_machines = data["mlist"]
     for machine in list_of_machines:
