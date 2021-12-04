@@ -105,14 +105,14 @@ class ThresholdAnalytic(Service):
         while True:
 
             try:
-                msg = self.comms.get("Config")
+                msg = self.comms.get("Dispatcher")
                 if msg is not None:
+                    print("got config in threshold")
                     self.set_config(msg.payload)
             except KeyError:
                 pass
 
-
-            while not self.state:
+            if (not self.state):
                 continue
             # update state and transform data
             self.transform()

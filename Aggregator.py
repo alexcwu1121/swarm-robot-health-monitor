@@ -50,7 +50,7 @@ class Aggregator(Service):
                         self.comms.add_publisher_port(info["ip"],
                                                         info["port"],
                                                         "Aggregator")
-                    else:
+                    elif name != "Dispatcher":
                         self.comms.add_subscriber_port(info['ip'], info['port'], name)
                         self.services[name] = info
         except:

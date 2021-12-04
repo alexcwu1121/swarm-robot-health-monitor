@@ -48,10 +48,6 @@ def main():
         procs.append(p)
         p.start()
 
-        p = mp.Process(target=worker, args=['Dispatcher'])
-        procs.append(p)
-        p.start()
-
         p = mp.Process(target=worker, args=['Ingress'])
         procs.append(p)
         p.start()
@@ -65,6 +61,10 @@ def main():
         p.start()
 
         p = mp.Process(target=worker, args=['StatusAnalytic'])
+        procs.append(p)
+        p.start()
+
+        p = mp.Process(target=worker, args=['Dispatcher'])
         procs.append(p)
         p.start()
 

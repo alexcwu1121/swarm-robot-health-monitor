@@ -115,7 +115,7 @@ class Dispatcher(Service):
 
             # Update Display if GUI has reload and send new config to Dispatch
             try:
-                msg = self.comms.get("Config")
+                msg = self.comms.get("Aggregator")
                 if msg is not None:
                     self.set_config(msg.payload)
             except KeyError:

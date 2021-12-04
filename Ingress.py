@@ -20,7 +20,7 @@ class Ingress(Service):
                                                 "Ingress")
                 self.comms.add_subscriber_port(config["Dispatcher"]["ip"],
                                                 config["Dispatcher"]["port"],
-                                                "Dispatch")
+                                                "Dispatcher")
         except:
             print("Service Config error!")
             exit(1)
@@ -34,7 +34,7 @@ class Ingress(Service):
         # Connect to robots
         for r in config['mlist']:
             self.comms.add_subscriber_port(r['ip'], r['port'], r['ip'])
-            self.state[r['ip']] = {}
+            self.state[r['ip']] = None
         time.sleep(0.5)
 
     # def update_options(self):
@@ -52,13 +52,15 @@ class Ingress(Service):
         while True:
 
             try:
-                msg = self.comms.get("Config")
+                msg = self.comms.get("Dispatcher")
                 if msg is not None:
+                    print("got config in ingress")
                     self.set_config(msg.payload)
             except KeyError:
                 pass
 
             if(not self.state):
+                #print("pass2")
                 continue
 
             # update states for all robots
@@ -69,7 +71,8 @@ class Ingress(Service):
 
             # Send a message for each robot state
             for ip in self.state.keys():
-                self.comms.send("Ingress", self.state[ip])
+                if self.state[ip] is not None:
+                    self.comms.send("Ingress", self.state[ip])
 
 if __name__ == "__main__":
     ingress = Ingress()

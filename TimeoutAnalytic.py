@@ -34,7 +34,8 @@ class TimeoutAnalytic(Service):
         self.state.clear()
         for robot in config["mlist"]:
             self.state[robot["ip"]] = {}
-            self.state[robot["ip"]]["timeout"] = config["alist"]["timeout"]
+            self.state[robot["ip"]]["PrevTime"] = time.process_time()
+        self.timeout = config["alist"]["timeout"]
 
         time.sleep(0.5)
 
@@ -63,6 +64,7 @@ class TimeoutAnalytic(Service):
         self.state[item['ip']]["Timeout"] = 0
         self.state[item['ip']]["PrevTime"] = time.process_time()
         """
+        """
         for ip in self.state.keys():
             msg_recv = self.comms.get(ip)
             if msg_recv is not None:
@@ -70,18 +72,27 @@ class TimeoutAnalytic(Service):
                 #     self.state[msg_recv.topic] = dict()
                 self.state[msg_recv.topic]["PrevTime"] = time.process_time()
         return
+        """
+        for topic in self.comms.subscriber_ports.keys():
+            msg_recv = self.comms.get(topic)
+            if msg_recv is not None:
+                if msg_recv.topic not in self.state.keys():
+                    self.state[msg_recv.topic] = dict()
+                self.state[msg_recv.topic]["PrevTime"] = time.process_time()
+        return
 
     def run(self):
         while True:
 
             try:
-                msg = self.comms.get("Config")
+                msg = self.comms.get("Dispatcher")
                 if msg is not None:
+                    print("got config in timeout")
                     self.set_config(msg.payload)
             except KeyError:
                 pass
 
-            while not self.state:
+            if (not self.state):
                 continue
             # update state and transform data
             try:
@@ -92,7 +103,7 @@ class TimeoutAnalytic(Service):
             for ip, values in self.state.items():
                 time_elapsed = time.process_time() - values["PrevTime"]
                 timeout = {"Timeout": True}
-                if time_elapsed > values["timeout"]:
+                if time_elapsed > self.timeout:
                     timeout["Timeout"] = False
                 self.comms.send("Timeout", Message(ip, timeout))
 
