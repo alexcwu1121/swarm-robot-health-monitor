@@ -1,6 +1,7 @@
-pyzmq
-zmq
-matplotlib
-ttkthemes
-paramiko
-numpy
+matplotlib==3.4.3
+numpy==1.19.5
+paramiko==2.6.0
+Pillow==8.4.0
+psutil==5.8.0
+pyzmq==22.3.0
+ttkthemes==3.2.2
