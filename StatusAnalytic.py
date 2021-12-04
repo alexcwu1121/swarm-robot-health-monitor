@@ -10,6 +10,7 @@ class StatusAnalytic(Service):
     def __init__(self):
         self.comms = Comms()
         self.state = {}
+        self.services = []
         self.conditions = {}
 
         try:
@@ -27,6 +28,8 @@ class StatusAnalytic(Service):
                 self.comms.add_subscriber_port(config["Threshold"]["ip"],
                                                 config["Threshold"]["port"],
                                                 "Threshold")
+                self.services.append("Timeout")
+                self.services.append("Threshold")
         except:
             print("Service Config error!")
             exit(1)
@@ -64,8 +67,8 @@ class StatusAnalytic(Service):
     #     pass
 
     def transform(self):
-        for ip in self.state.keys():
-            msg = self.comms.get(ip)
+        for sub in self.services:
+            msg = self.comms.get(sub)
             if msg is not None:
                 self.state[msg.topic].update(msg.payload)
         return

@@ -10,6 +10,7 @@ class TimeoutAnalytic(Service):
     def __init__(self):
 
         self.comms = Comms()
+        self.services = []
         self.state = {}
 
         try:
@@ -24,6 +25,7 @@ class TimeoutAnalytic(Service):
                 self.comms.add_subscriber_port(config["Ingress"]["ip"],
                                                 config["Ingress"]["port"],
                                                 "Ingress")
+                self.services.append("Ingress")
         except:
             print("Service Config error!")
             exit(1)
@@ -35,7 +37,7 @@ class TimeoutAnalytic(Service):
         for robot in config["mlist"]:
             self.state[robot["ip"]] = {}
             self.state[robot["ip"]]["PrevTime"] = time.process_time()
-        self.timeout = config["alist"]["timeout"]
+        self.timeout = float(config["alist"]["timeout"])
 
         time.sleep(0.5)
 
@@ -64,20 +66,9 @@ class TimeoutAnalytic(Service):
         self.state[item['ip']]["Timeout"] = 0
         self.state[item['ip']]["PrevTime"] = time.process_time()
         """
-        """
-        for ip in self.state.keys():
-            msg_recv = self.comms.get(ip)
+        for sub in self.services:
+            msg_recv = self.comms.get(sub)
             if msg_recv is not None:
-                # if msg_recv.topic not in self.state.keys():
-                #     self.state[msg_recv.topic] = dict()
-                self.state[msg_recv.topic]["PrevTime"] = time.process_time()
-        return
-        """
-        for topic in self.comms.subscriber_ports.keys():
-            msg_recv = self.comms.get(topic)
-            if msg_recv is not None:
-                if msg_recv.topic not in self.state.keys():
-                    self.state[msg_recv.topic] = dict()
                 self.state[msg_recv.topic]["PrevTime"] = time.process_time()
         return
 

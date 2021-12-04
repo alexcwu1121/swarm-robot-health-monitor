@@ -10,6 +10,7 @@ class ThresholdAnalytic(Service):
     def __init__(self):
 
         self.comms = Comms()
+        self.services = []
         self.state = {}
         self.bounds = {}
 
@@ -25,6 +26,7 @@ class ThresholdAnalytic(Service):
                 self.comms.add_subscriber_port(config["Ingress"]["ip"],
                                                 config["Ingress"]["port"],
                                                 "Ingress")
+                self.services.append("Ingress")
         except:
             print("Service Config error!")
             exit(1)
@@ -70,14 +72,11 @@ class ThresholdAnalytic(Service):
         pass
 
     def transform(self):
-        for ip in self.state.keys():
-            msg = self.comms.get(ip)
+        # Check for new message from all sevices and update internal state
+        for sub in self.services:
+            msg = self.comms.get(sub)
             if msg is not None:
-                for sensor in self.state[ip].keys():
-                    try:
-                        self.state[ip][sensor] = msg.payload[sensor]
-                    except ValueError:
-                        pass
+                self.state[msg.topic].update(msg.payload)
         return
 
     # take a threshold dictionary and a robot's current state and return threshold condition for each sensor
