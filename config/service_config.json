@@ -1,26 +1,26 @@
 {
-    "Dispatcher":{
-        "ip":"127.0.0.1",
-        "port":"5000"
-    },
     "Aggregator":{
-        "ip":"127.0.0.1",
-        "port":"5001"
-    },
-    "Ingress":{
-        "ip":"127.0.0.1",
-        "port":"5002"
-    },
-    "Threshold":{
         "ip":"127.0.0.1",
         "port":"2900"
     },
-    "Timeout":{
+    "Dispatcher":{
         "ip":"127.0.0.1",
         "port":"2901"
     },
-    "Status":{
+    "Ingress":{
         "ip":"127.0.0.1",
         "port":"2902"
+    },
+    "Threshold":{
+        "ip":"127.0.0.1",
+        "port":"2903"
+    },
+    "Timeout":{
+        "ip":"127.0.0.1",
+        "port":"2904"
+    },
+    "Status":{
+        "ip":"127.0.0.1",
+        "port":"2905"
     }
 }

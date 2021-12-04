@@ -34,7 +34,6 @@ class Dispatcher(Service):
         """
 
         #Initialize the attributes
-        self.services = {}
         self.comms = Comms()
         self.config = {}
 
@@ -44,31 +43,29 @@ class Dispatcher(Service):
         try:
             with open("config/service_config.json") as f:
                 config = json.load(f)
-                for name, info in config.items():
-                    if name == "Dispatcher":
-                        self.comms.add_publisher_port(config["Dispatcher"]["ip"],
-                                                        config["Dispatcher"]["port"],
-                                                    config["Dispatcher"]["ip"])
-                    elif name == "Aggregator":
-                        self.comms.add_subscriber_port(name['ip'], name['port'], name['ip'])
-                        self.services[name] = info
+                self.comms.add_publisher_port(config["Dispatcher"]["ip"],
+                                                config["Dispatcher"]["port"],
+                                                "Dispatcher")
+                self.comms.add_subscriber_port(config["Aggregator"]['ip'],
+                                                config["Aggregator"]['port'], 
+                                                "Aggregator")
         except:
             print("Service Config error!")
             exit(1)
 
         time.sleep(0.5)
 
-    def set_state(self, config):
+    def set_config(self, config):
         '''
         Updates the current state attribute with given a config then 
         Publishes the given config from interface to Dispatch
         '''
-        self.state.clear()
         self.config = config
-        self.comms.send("Config", Message("Config", config))
+        self.comms.send("Dispatcher", Message("Config", config))
         time.sleep(0.5)
         
-
+    def transform(self):
+        return super().transform()
     # def update_options(self):
     #     """
     #     Placeholder for when dispatcher becomes a thing
@@ -117,9 +114,12 @@ class Dispatcher(Service):
             #     self.g.update_display(bot)
 
             # Update Display if GUI has reload and send new config to Dispatch
-             msg = self.comms.get("Config")
-             if msg is not None:
-                self.set_config(msg.payload)
+            try:
+                msg = self.comms.get("Config")
+                if msg is not None:
+                    self.set_config(msg.payload)
+            except KeyError:
+                pass
 
 
 

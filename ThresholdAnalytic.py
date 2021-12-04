@@ -2,44 +2,82 @@ import sys
 import json
 import time
 from Service import Service
+from comms import Comms
 from comms import Message
 
 class ThresholdAnalytic(Service):
 
-    def init_config(self, service_conf):
-        # TODO: don't hardcode this config file. get it from gui
-        with open("config/config_testing_c.json") as f:
-            self.config = json.load(f)
+    def __init__(self):
 
-        # TODO: don't hardcode this config file. get it from gui
-        with open("config/config_threshold.json") as f:
-            self.analytic_config = json.load(f)
-
+        self.comms = Comms()
+        self.state = {}
         self.bounds = {}
-        self.bounds['global'] = self.analytic_config['Threshold']['bounds']['global']
 
-        # Set up subscribers according to config
-        for item in self.analytic_config['Threshold']['subscribe']:
-            self.comms.add_subscriber_port(item['ip'], item['port'], item['topic'])
-
-        # Connect to analytics according to config
-        ip = self.analytic_config['Threshold']['publish']['ip']
-        port = self.analytic_config['Threshold']['publish']['port']
-        self.comms.add_publisher_port(ip, port, 'Threshold')
+        try:
+            with open("config/service_config.json") as f:
+                config = json.load(f)
+                self.comms.add_publisher_port(config["Threshold"]["ip"],
+                                                config["Threshold"]["port"],
+                                                "Threshold")
+                self.comms.add_subscriber_port(config["Dispatcher"]["ip"],
+                                                config["Dispatcher"]["port"],
+                                                "Dispatcher")
+                self.comms.add_subscriber_port(config["Ingress"]["ip"],
+                                                config["Ingress"]["port"],
+                                                "Ingress")
+        except:
+            print("Service Config error!")
+            exit(1)
 
         time.sleep(0.5)
+
+    def set_config(self, config):
+        self.state.clear()
+        self.bounds.clear()
+        self.bounds['global'] = config["alist"]["Threshold"]["bounds"]["global"]
+        for robot in config["mlist"]:
+            ip = robot["ip"]
+            self.state[ip] = {}
+            for sensor in robot["data"].keys():
+                self.state[ip][sensor] = ""
+        time.sleep(0.5)
+        
+
+    # def init_config(self, service_conf):
+    #     # TODO: don't hardcode this config file. get it from gui
+    #     with open("config/config_testing_c.json") as f:
+    #         self.config = json.load(f)
+
+    #     # TODO: don't hardcode this config file. get it from gui
+    #     with open("config/config_threshold.json") as f:
+    #         self.analytic_config = json.load(f)
+
+    #     self.bounds = {}
+    #     self.bounds['global'] = self.analytic_config['Threshold']['bounds']['global']
+
+    #     # Set up subscribers according to config
+    #     for item in self.analytic_config['Threshold']['subscribe']:
+    #         self.comms.add_subscriber_port(item['ip'], item['port'], item['topic'])
+
+    #     # Connect to analytics according to config
+    #     ip = self.analytic_config['Threshold']['publish']['ip']
+    #     port = self.analytic_config['Threshold']['publish']['port']
+    #     self.comms.add_publisher_port(ip, port, 'Threshold')
+
+    #     time.sleep(0.5)
 
     def update_options(self):
         pass
 
     def transform(self):
-        for topic in self.comms.subscriber_ports.keys():
-            msg_recv = self.comms.get(topic)
-            if msg_recv is not None:
-                if msg_recv.topic in self.state.keys():
-                    self.state[msg_recv.topic].update(msg_recv.payload)
-                else:
-                    self.state[msg_recv.topic] = msg_recv.payload
+        for ip in self.state.keys():
+            msg = self.comms.get(ip)
+            if msg is not None:
+                for sensor in self.state[ip].keys():
+                    try:
+                        self.state[ip][sensor] = msg.payload[sensor]
+                    except ValueError:
+                        pass
         return
 
     # take a threshold dictionary and a robot's current state and return threshold condition for each sensor
@@ -65,6 +103,17 @@ class ThresholdAnalytic(Service):
 
     def run(self):
         while True:
+
+            try:
+                msg = self.comms.get("Config")
+                if msg is not None:
+                    self.set_config(msg.payload)
+            except KeyError:
+                pass
+
+
+            while not self.state:
+                continue
             # update state and transform data
             self.transform()
 

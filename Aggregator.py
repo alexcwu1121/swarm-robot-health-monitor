@@ -47,11 +47,11 @@ class Aggregator(Service):
                 config = json.load(f)
                 for name, info in config.items():
                     if name == "Aggregator":
-                        self.comms.add_publisher_port(config["Aggregator"]["ip"],
-                                                        config["Aggregator"]["port"],
-                                                    config["Aggregator"]["ip"])
+                        self.comms.add_publisher_port(info["ip"],
+                                                        info["port"],
+                                                        "Aggregator")
                     else:
-                        self.comms.add_subscriber_port(name['ip'], name['port'], name['ip'])
+                        self.comms.add_subscriber_port(info['ip'], info['port'], name)
                         self.services[name] = info
         except:
             print("Service Config error!")
@@ -59,7 +59,7 @@ class Aggregator(Service):
 
         time.sleep(0.5)
 
-    def set_state(self, config):
+    def set_config(self, config):
         '''
         Updates the current state attribute with given a config then 
         Publishes the given config from interface to Dispatch
@@ -68,7 +68,7 @@ class Aggregator(Service):
         for robot in config["mlist"]:
             ip = robot["ip"]
             self.state[ip] = {}
-        self.comms.send("Config", Message("Config", config))
+        self.comms.send("Aggregator", Message("Config", config))
         time.sleep(0.5)
         
 
@@ -98,7 +98,17 @@ class Aggregator(Service):
         Updates to GUI are sent even if no messages have been recieved since the last update
         """
         while True:
+
+            # Update Display if GUI has reload and send new config to Dispatch
+            if self.g.get_reload() == True:
+                self.set_config(self.g.get_config())
+                self.g.inform_reload()
+
+            #if no config, do nothing
+            #if(not self.state):
+            #    continue
             # update state and transform data
+            
             try:
                 self.transform()
             except KeyError:
@@ -118,11 +128,6 @@ class Aggregator(Service):
             self.g.refresh_gui()
             for bot in robot_list:
                 self.g.update_display(bot)
-
-            # Update Display if GUI has reload and send new config to Dispatch
-            if self.g.get_reload() == True:
-                self.set_config(self.g.get_config)
-                self.g.inform_reload()
 
 
 

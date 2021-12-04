@@ -53,27 +53,25 @@
     }
   ],
 
-  "alist":[
-    {
-      "thresholds": {
-        "global":{
-          "svmem_percentage": {
-            "min": "20",
-            "max": "40"
-          },
-          "ext_sensors": {
-            "min": "0",
-            "max": "10000000"
-          }
+  "alist":{
+    "thresholds": {
+      "global":{
+        "svmem_percentage": {
+          "min": "20",
+          "max": "40"
+        },
+        "ext_sensors": {
+          "min": "0",
+          "max": "10000000"
         }
-      },
-      "timeouts": "3"
-      ,
-      "status_conditions":{
-        "nominal": "0",
-        "warning": "1",
-        "critical": "2"
       }
+    },
+    "timeouts": "3"
+    ,
+    "conditions":{
+      "nominal": "0",
+      "warning": "1",
+      "critical": "2"
     }
-  ]
+  }
 }
