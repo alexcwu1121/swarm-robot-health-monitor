@@ -1,0 +1,29 @@
+{
+	"Threshold":{
+    "publish":{
+      "ip": "127.0.0.1",
+      "port": "2900"
+    },
+
+    "subscribe": [
+      {
+        "ip": "127.0.0.1",
+        "port": "4000",
+        "topic": "Ingress"
+      }
+    ],
+
+    "bounds": {
+      "global":{
+        "svmem_percentage": {
+          "min": "20",
+          "max": "40"
+        },
+        "ext_sensors": {
+          "min": "0",
+          "max": "10000000"
+        }
+      }
+    }
+  }
+}
