@@ -63,7 +63,3 @@ In addition to the GUI the server side also relies on Display.py which contains 
 creates subscribers for each of the robots and saves the information it gets from them before using that new data to update
 the GUI.  The final part of the server side is driver.py which is used to start Display and any other services that the
 application is using.
-
-Autodeploy:
-to run Autodeploy run Python autodepoly_test.py which is in the resources sub folder of the srhmd folder
-
