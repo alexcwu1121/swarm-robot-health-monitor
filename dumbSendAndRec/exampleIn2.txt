@@ -1,6 +1,0 @@
-port_topic:
-127.0.0.1,4000,127.0.0.1
-messages:
-127.0.0.1,temp,hello
-127.0.0.1,mem,I like ice cream
-127.0.0.1,mem,I like ice cream,temp,hugs and hugs and hugs

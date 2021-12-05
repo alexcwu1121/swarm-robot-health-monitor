@@ -1,7 +1,7 @@
 {
 	"mlist":[
     {
-        "ip": "129.161.220.149",
+        "ip": "127.0.0.1",
         "port": "3000",
         "name": "Ethansdd",
         "update_interval": "0.1",
@@ -22,34 +22,6 @@
             "max": "100"
           }
         }
-    },
-    {
-      "ip": "129.161.221.130",
-      "port": "3001",
-      "name": "Alexsdd",
-      "update_interval": "0.1",
-      "agg_interval": "0.1",
-      "data":
-      {
-        "cpu_freq": "degree",
-        "svmem_percentage": "percent",
-        "cpu_percent": "percent",
-        "ext_sensors": "u"
-      }
-    },
-    {
-      "ip": "129.161.220.32",
-      "port": "3002",
-      "name": "Danielsdd",
-      "update_interval": "0.1",
-      "agg_interval": "0.1",
-      "data":
-      {
-        "cpu_freq": "degree",
-        "svmem_percentage": "percent",
-        "cpu_percent": "percent",
-        "ext_sensors": "u"
-      }
     }
   ],
 

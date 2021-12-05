@@ -39,11 +39,11 @@ class StatusAnalytic(Service):
 
     def get_status(self, state):
         status = {}
-
         # if timeout specifically fails, then immediate critical
-        if not state['Timeout']:
-            status["Status"] = "disconnected"
-            return status
+        #timeout turned off for testing
+        #if not state['Timeout']:
+        #    status["Status"] = "disconnected"
+        #    return status
 
         values = list(state.values())
         failures = len(values) - sum(values)

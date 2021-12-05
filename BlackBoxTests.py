@@ -1,3 +1,8 @@
+"""
+BlackBoxTests.py used to run black box tests on services
+to run the threshold tests run python BlackBoxTests.py Threshold
+to run the status tests run python BlackBoxTests.py Status
+"""
 from StatusAnalytic import StatusAnalytic
 from ThresholdAnalytic import ThresholdAnalytic
 from TimeoutAnalytic import TimeoutAnalytic
@@ -25,7 +30,13 @@ def worker(type, service_config):
         timeout.run()
     else:
         print("No such service")
-
+"""
+Topic: the topic to send the test message to
+TestTopic: the topic of the value being sent in the message
+TestVal: the value in the test message
+Expected: the expcted value to get back
+SubAndSend: the Comms object being used to communicate with the service
+"""
 def ThresholdServiceTest(Topic, TestTopic, TestVal, Expected, SubAndSend):
     SubAndSend.send(Topic,Message(Topic, {TestTopic:TestVal}))
     time.sleep(.1)
@@ -36,7 +47,13 @@ def ThresholdServiceTest(Topic, TestTopic, TestVal, Expected, SubAndSend):
     else:
         print("test failed")
     return val_back == Expected
-
+"""
+Topic: the topic to send the test message to
+TestTopic: the topic of the value being sent in the message
+TestVal: the value in the test message
+Expected: the expcted value to get back
+SubAndSend: the Comms object being used to communicate with the service
+"""
 def StatusServiceTest(Topic, TestTopic, TestVal, Expected, SubAndSend):
     SubAndSend.send(Topic,Message(Topic, {TestTopic:TestVal}))
     val_back = SendOutStatus.get("Status")

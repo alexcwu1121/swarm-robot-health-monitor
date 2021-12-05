@@ -1,6 +1,0 @@
-pyzmq
-zmq
-matplotlib
-ttkthemes
-paramiko
-numpy
