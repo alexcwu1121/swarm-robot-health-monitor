@@ -1,3 +1,7 @@
+"""
+Test Sender is designed to test the Sending functioSendingnality of the zmq system
+"""
+
 from Comms import Comms, Message
 from datetime import datetime
 from datetime import time
@@ -10,6 +14,13 @@ import time
 
 
 class TestSender:
+
+     """
+        Inititates the communications for the test sender and establish
+        a connection to port 3001 by default
+        Return:
+            None
+    """
     def __init__(self):
         self.comms = Comms()
         #gets all the port names and numbers
@@ -22,6 +33,12 @@ class TestSender:
         self.comms.add_publisher_port('127.0.0.1','3001','testInput')
         time.sleep(.1)
     
+    """
+        Parses system arguments for setup configuration, then loops and waits for messages.
+        Each message is then sent as a test to the receiver, and a status is displayed
+        Return:
+            None
+    """
     def run(self):
         if(len(sys.argv) >= 2):
             time.sleep(.2)

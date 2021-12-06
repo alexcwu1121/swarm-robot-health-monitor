@@ -1,3 +1,7 @@
+"""
+Listens to all robots in the swarm and collapses the data into a single stream
+"""
+
 import sys
 import json
 import time
@@ -6,6 +10,14 @@ from comms import Message
 
 class Ingress(Service):
 
+    """
+    Initiates the configuration for the service
+    Attributes:
+        service_conf: Dict()
+            The configuration for the service
+    Return: 
+        None
+    """
     def init_config(self, service_conf):
         # TODO: don't hardcode this config file. get it from gui
         with open("config/config_testing_c.json") as f:
@@ -26,9 +38,19 @@ class Ingress(Service):
 
         time.sleep(0.5)
 
+    """
+    This will update the parameters for the service
+    Return: 
+        None
+    """
     def update_options(self):
         pass
 
+    """
+    Transforms a message to a state and stores it in the object for later reference
+    Return: 
+        None
+    """
     def transform(self):
         for ip in self.comms.subscriber_ports.keys():
             # Check status data
@@ -37,6 +59,11 @@ class Ingress(Service):
                 self.state[ip] = msg_recv
         return
 
+    """
+    Runs the ingress analytic
+    Return: 
+        None
+    """
     def run(self):
         while True:
             # update states for all robots

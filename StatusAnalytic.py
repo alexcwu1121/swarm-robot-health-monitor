@@ -1,3 +1,7 @@
+""" 
+Takes data fields from various analytics to compile a status effect for a robot.
+"""
+
 import sys
 import json
 import time
@@ -6,6 +10,14 @@ from comms import Message
 
 class StatusAnalytic(Service):
 
+    """
+    Initiates the configuration for the service
+    Attributes:
+        service_conf: Dict()
+            The configuration for the service
+    Return: 
+        None
+    """
     def init_config(self, service_conf):
         # TODO: don't hardcode this config file. get it from gui
         with open("config/config_status.json") as f:
@@ -24,9 +36,19 @@ class StatusAnalytic(Service):
 
         time.sleep(0.5)
 
+    """
+    This will update the parameters for the service
+    Return: 
+        None
+    """
     def update_options(self):
         pass
 
+    """
+    Transforms a message to a state and stores it in the object for later reference
+    Return: 
+        None
+    """
     def transform(self):
         for topic in self.comms.subscriber_ports.keys():
             msg_recv = self.comms.get(topic)
@@ -37,6 +59,14 @@ class StatusAnalytic(Service):
                     self.state[msg_recv.topic] = msg_recv.payload
         return
 
+    """
+    Get the status of a given robot
+    Attribute:
+        state: Dict()
+            A dictionary of IPs and Messages
+    Return: 
+        The status of the robot
+    """
     def get_status(self, state):
         status = {}
 
@@ -56,6 +86,11 @@ class StatusAnalytic(Service):
             status["Status"] = "critical"
         return status
 
+    """
+    Runs the status analytic
+    Return: 
+        None
+    """
     def run(self):
         while True:
             # update state and transform data

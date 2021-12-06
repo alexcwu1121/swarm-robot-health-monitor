@@ -13,9 +13,16 @@ import multiprocessing as mp
 import sys
 import os
 
-#sets up and runs a service
-#type: the type of service that worker is running
-#service_config: the configuration of the service being run
+"""
+Initiates, sets up, and runs a service
+Attributes:
+    type: String
+        The type of service that the worker is running
+    service_config: Service
+        The configuration of the service being run
+Return:
+    None
+"""
 def worker(type, service_config):
     if type == 'Display':
         display = Display(service_config)
@@ -35,7 +42,11 @@ def worker(type, service_config):
     else:
         print("No such service")
 
-#launches all the services need for the application
+"""
+Launches all of the services needed to run the application
+Return:
+    None
+"""
 def main():
     # launch services
     procs = []

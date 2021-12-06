@@ -18,9 +18,8 @@ from Service import Service
 
 class Display(Service):
 
-
-    def init_config(self, service_conf):
-        """
+      """
+        Initiates the configuration
         Attributes:
             - state: dictonary
                 most up to date state of the robots
@@ -32,8 +31,10 @@ class Display(Service):
                 the GUI
             - config: dict
                 config information about the swarm
-        """
-        
+        Return:
+            None
+    """
+    def init_config(self, service_conf):
         self.g = inter.Interface()
 
         # wait for the user to pick a file
@@ -48,10 +49,13 @@ class Display(Service):
 
         time.sleep(0.5)
 
+
+    """
+    Dumps the subscribers and state and then goes through and re checks the config 
+    Return:
+        None
+    """
     def reload(self):
-        """
-        dumps the subscribers and state and then goes through and re checks the config 
-        """
         self.config = self.g.get_config()
         del self.comms
         self.comms = Comms()
@@ -63,16 +67,21 @@ class Display(Service):
 
         time.sleep(0.5)
 
+
+    """
+    Placeholder for when dispatcher becomes a thing
+    """
     def update_options(self):
-        """
-        Placeholder for when dispatcher becomes a thing
-        """
         pass
 
+    """
+    Used to listen for messages from the subscribers and update the 
+    internal state dictonary with new data when new messages are received
+    Return: 
+        None
+    """
     def transform(self):
-        """
-        used to listen for messages from the subscribers and update the internal state dictonary with new data when new messages are received
-        """
+
         for topic in self.comms.subscriber_ports.keys():
             msg_recv = self.comms.get(topic)
             if msg_recv is not None:
@@ -82,11 +91,15 @@ class Display(Service):
                     self.state[msg_recv.topic] = msg_recv.payload
         return None
 
+
+    """
+    Indefinitely checks for new messages and updates the GUI with the current status of the robots
+    Updates to GUI are sent even if no messages have been recieved since the last update
+    Return:
+        None
+    """
     def run(self):
-        """
-        indefinitely checks for new messages and updates the GUI with the current status of the robots
-        Updates to GUI are sent even if no messages have been recieved since the last update
-        """
+       
         while True:
 
             # update state and transform data

@@ -1,3 +1,8 @@
+
+"""
+Dumb sender is designed to test the basic sending functionality of the zmq system
+"""
+
 from comms import Comms, Message
 from datetime import time
 import multiprocessing as mp
@@ -9,11 +14,24 @@ from datetime import datetime
 import string
 
 class testSender:
+
+	"""
+        Inititates the communications for the test sender and establish
+        a connection to port 3001 by default
+        Return:
+            None
+    """
 	def __init__(self):
 		self.comms = Comms()
 		self.comms.add_publisher_port('127.0.0.1','3001','testInput')
 		time.sleep(.1)
 	
+	"""
+        Parses system arguments for setup configuration, then loops and waits for messages.
+		Each message is then sent as a test to the receiver, and a status is displayed
+        Return:
+            None
+    """
 	def run(self):
 		if(len(sys.argv) >= 2):
 			time.sleep(.2)
@@ -46,12 +64,7 @@ class testSender:
 		print("All done sending")
 		exit()
 	
-	
-
-
-
 if __name__ == "__main__":
-
 
 	random.seed(datetime.now())
 

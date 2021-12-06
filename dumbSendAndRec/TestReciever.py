@@ -1,3 +1,7 @@
+"""
+Test receiver is designed to test the basic receiving functionality of the zmq system
+"""
+
 from Comms import Comms, Message
 from datetime import datetime
 from datetime import time
@@ -7,9 +11,14 @@ import random
 import sys
 import time
 
-
 class TestReciever:
     
+    """
+        Inititates the communications for the test receiver and establish
+        a connection to port 3001 by default
+        Return:
+            None
+    """
     def __init__(self):
         self.comms = Comms()
         self.ip_num = '127.0.0.1'
@@ -22,6 +31,11 @@ class TestReciever:
         self.comms.add_subscriber_port(self.ip_num,self.port_num,self.topic_name)
         time.sleep(.1)
 
+    """
+        Runs a test of the receiver and prints the status
+        Return:
+            None
+    """
     def run(self):
         while True:
             msg_recv = self.comms.get(self.topic_name)

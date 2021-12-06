@@ -1,5 +1,6 @@
-""" Comms
-    Message queue manager
+""" 
+Comms Message queue manager's purpose is to facilitate the creation and management of connections 
+Slightly modified from the main comms class for mock object testing
 """
 import zmq
 from queue import *
@@ -13,11 +14,29 @@ LOG = logging.getLogger("comms")
 LOG.setLevel(level=logging.INFO)
 
 class Comms:
+    """
+        Initiates publisher ports, subscriber ports, and subscriber queues
+        Return:
+            None
+    """
     def __init__(self):
         self.subscriber_ports = {}
         self.publisher_ports = {}
         self.subscriber_queues = {}
 
+
+    """
+        Create a zmq publisher port
+        Arguments:
+            ip: String
+                The ip address of the new publisher port
+            port: int
+                The port number of the new publisher port
+            topic: String
+                The topic name of the new publisher port
+        Return:
+            None
+    """
     def add_publisher_port(self, ip, port, topic):
         context = zmq.Context()
         socket = context.socket(zmq.PUB)
@@ -40,6 +59,15 @@ class Comms:
         t = threading.Thread(target=self.__receive, args=(topic,))
         t.start()
 
+   """
+        Get the top message sent to a given topic and remove it from the
+        subscriber queue
+        Arguments:
+            topic: String
+                The topic to get the message from 
+        Return: 
+            None
+    """
     def get(self, topic):
         try:
             encoded = self.subscriber_queues[topic].get(False)
@@ -59,6 +87,16 @@ class Comms:
             return pickle.loads(encoded)
         return encoded
 
+   """
+        Send a message using a publisher port
+        Arguments:
+            topic: String
+                The topic to send the message to
+            message: String
+                The message to be sent to the topic
+        Return: 
+            None
+    """
     def send(self, topic, message):
         encoded = pickle.dumps(message)
         self.publisher_ports[topic].send(encoded)
