@@ -4,7 +4,8 @@ TODOS:      Depends on what other things we will implement.
 Description:This file will mainly be responsive for calling out GUI for now.
 """
 
-from Display import Display
+from Aggregator import Aggregator
+from Dispatcher import Dispatcher
 from StatusAnalytic import StatusAnalytic
 from ThresholdAnalytic import ThresholdAnalytic
 from TimeoutAnalytic import TimeoutAnalytic
@@ -16,22 +17,25 @@ import os
 #sets up and runs a service
 #type: the type of service that worker is running
 #service_config: the configuration of the service being run
-def worker(type, service_config):
-    if type == 'Display':
-        display = Display(service_config)
-        display.run()
-    elif type == 'ThresholdAnalytic':
-        threshold = ThresholdAnalytic(service_config)
-        threshold.run()
-    elif type == 'StatusAnalytic':
-        status = StatusAnalytic(service_config)
-        status.run()
-    elif type == 'TimeoutAnalytic':
-        timeout = TimeoutAnalytic(service_config)
-        timeout.run()
+def worker(type):
+    if type == 'Aggregator':
+        aggregator = Aggregator()
+        aggregator.run()
+    elif type == 'Dispatcher':
+        dispatcher = Dispatcher()
+        dispatcher.run()
     elif type == 'Ingress':
-        ingress = Ingress(service_config)
+        ingress = Ingress()
         ingress.run()
+    elif type == 'ThresholdAnalytic':
+        threshold = ThresholdAnalytic()
+        threshold.run()
+    elif type == 'TimeoutAnalytic':
+        timeout = TimeoutAnalytic()
+        timeout.run()
+    elif type == 'StatusAnalytic':
+        status = StatusAnalytic()
+        status.run()
     else:
         print("No such service")
 
@@ -40,23 +44,27 @@ def main():
     # launch services
     procs = []
     try:
-        p = mp.Process(target=worker, args=('Display', None))
+        p = mp.Process(target=worker, args=['Aggregator'])
         procs.append(p)
         p.start()
 
-        p = mp.Process(target=worker, args=('ThresholdAnalytic', None))
+        p = mp.Process(target=worker, args=['Ingress'])
         procs.append(p)
         p.start()
 
-        p = mp.Process(target=worker, args=('StatusAnalytic', None))
+        p = mp.Process(target=worker, args=['ThresholdAnalytic'])
         procs.append(p)
         p.start()
 
-        p = mp.Process(target=worker, args=('TimeoutAnalytic', None))
+        p = mp.Process(target=worker, args=['TimeoutAnalytic'])
         procs.append(p)
         p.start()
 
-        p = mp.Process(target=worker, args=('Ingress', None))
+        p = mp.Process(target=worker, args=['StatusAnalytic'])
+        procs.append(p)
+        p.start()
+
+        p = mp.Process(target=worker, args=['Dispatcher'])
         procs.append(p)
         p.start()
 
@@ -68,6 +76,7 @@ def main():
             sys.exit(0)
         except SystemExit:
             os._exit(0)
+    
 
 if __name__ == "__main__":
     main()

@@ -1,0 +1,77 @@
+{
+	"mlist":[
+    {
+        "ip": "129.161.220.149",
+        "port": "3000",
+        "name": "Ethansdd",
+        "update_interval": "0.1",
+        "agg_interval": "0.1",
+        "data" :
+        {
+          "cpu_freq": "degree",
+          "svmem_percentage": "percent",
+          "cpu_percent": "percent",
+          "ext_sensors": "u"
+        },
+        "graph" :
+        {
+          "svmem_percentage": 
+          {
+            "length": "30",
+            "min": "0",
+            "max": "100"
+          }
+        }
+    },
+    {
+      "ip": "129.161.221.130",
+      "port": "3001",
+      "name": "Alexsdd",
+      "update_interval": "0.1",
+      "agg_interval": "0.1",
+      "data":
+      {
+        "cpu_freq": "degree",
+        "svmem_percentage": "percent",
+        "cpu_percent": "percent",
+        "ext_sensors": "u"
+      }
+    },
+    {
+      "ip": "129.161.220.32",
+      "port": "3002",
+      "name": "Danielsdd",
+      "update_interval": "0.1",
+      "agg_interval": "0.1",
+      "data":
+      {
+        "cpu_freq": "degree",
+        "svmem_percentage": "percent",
+        "cpu_percent": "percent",
+        "ext_sensors": "u"
+      }
+    }
+  ],
+
+  "alist":{
+    "thresholds": {
+      "global":{
+        "svmem_percentage": {
+          "min": "20",
+          "max": "40"
+        },
+        "ext_sensors": {
+          "min": "0",
+          "max": "10000000"
+        }
+      }
+    },
+    "timeout": "3"
+    ,
+    "conditions":{
+      "nominal": "0",
+      "warning": "1",
+      "critical": "2"
+    }
+  }
+}
